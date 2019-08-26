@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Discord.Net" Version="2.1.1" />
+    <PackageReference Include="MathParser.org-mXparser" Version="4.3.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\DestDiscordBotV3.Data\DestDiscordBotV3.Data.csproj" />
+    <ProjectReference Include="..\..\Data\DestDiscordBotV3.Model\DestDiscordBotV3.Model.csproj" />
+  </ItemGroup>
+
+</Project>
