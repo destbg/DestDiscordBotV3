@@ -103,10 +103,8 @@ namespace DestDiscordBotV3.Service.External
         }
 
         [Command("time")]
-        public async Task HourAsync()
-        {
+        public async Task HourAsync() => 
             await ReplyAsync($"The Utc time is: **{DateTime.UtcNow.TimeOfDay}**");
-        }
 
         [Command("remindme")]
         public async Task RemindMeAsync(int minutes)
