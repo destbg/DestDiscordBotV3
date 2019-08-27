@@ -20,7 +20,7 @@ namespace DestDiscordBotV3.Service.External
         public async Task EightBallAsync([Remainder] string question)
         {
             var list = await _eightBall.GetAllToList();
-            await ReplyAsync($":8ball: **Question:** {question}\n**Answer:** {list[new Random().Next(list.Count)]}");
+            await ReplyAsync($":8ball: **Question:** {question}\n**Answer:** {list[new Random().Next(list.Count)].Msg}");
         }
     }
 }

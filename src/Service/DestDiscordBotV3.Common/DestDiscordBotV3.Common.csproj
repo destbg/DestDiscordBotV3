@@ -8,4 +8,9 @@
     <PackageReference Include="Discord.Net" Version="2.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\DestDiscordBotV3.Data\DestDiscordBotV3.Data.csproj" />
+    <ProjectReference Include="..\..\Data\DestDiscordBotV3.Model\DestDiscordBotV3.Model.csproj" />
+  </ItemGroup>
+
 </Project>

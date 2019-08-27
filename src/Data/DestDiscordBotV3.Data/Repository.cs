@@ -24,7 +24,7 @@ namespace DestDiscordBotV3.Data
         public Task<List<T>> GetAllToList() =>
             _database.GetCollection<T>(_name).Find(new BsonDocument()).ToListAsync();
 
-        public Task<T> GetById(Guid id)
+        public Task<T> GetById<TId>(TId id)
         {
             var list = _database.GetCollection<T>(_name);
             var filter = Builders<T>.Filter.Eq("_id", id);
@@ -50,21 +50,27 @@ namespace DestDiscordBotV3.Data
             await list.InsertOneAsync(obj);
         }
 
-        public async Task Update(T obj, Guid id)
+        public async Task Update<TId>(T obj, TId id)
         {
             var list = _database.GetCollection<T>(_name);
             await list.ReplaceOneAsync(
-                new BsonDocument("_id", id),
+                Builders<T>.Filter.Eq("_id", id),
                 obj,
                 new UpdateOptions { IsUpsert = true });
         }
 
-        public async Task Delete(Guid id)
+        public async Task Delete<TId>(TId id)
         {
             var list = _database.GetCollection<T>(_name);
             var filter = Builders<T>.Filter.Eq("_id", id);
 
             await list.DeleteOneAsync(filter);
+        }
+
+        public async Task Delete(Expression<Func<T, bool>> expression)
+        {
+            var list = _database.GetCollection<T>(_name);
+            await list.DeleteOneAsync(expression);
         }
 
         public async Task DeleteMany(Expression<Func<T, bool>> expression)

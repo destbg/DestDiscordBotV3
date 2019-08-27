@@ -1,4 +1,5 @@
 ﻿using DestDiscordBotV3.Model;
+using DestDiscordBotV3.Service.Extension;
 using Discord;
 using Discord.Commands;
 using Newtonsoft.Json;
@@ -99,6 +100,19 @@ namespace DestDiscordBotV3.Service.External
                 await ReplyAsync($"__destbot__ chose **{chosen.ToUpper()}**, **SCISSORS** wins!");
             else if (arr.Contains("rock") && arr.Contains("scissors"))
                 await ReplyAsync($"__destbot__ chose **{chosen.ToUpper()}**, **ROCK** wins!");
+        }
+
+        [Command("time")]
+        public async Task HourAsync()
+        {
+            await ReplyAsync($"The Utc time is: **{DateTime.UtcNow.TimeOfDay}**");
+        }
+
+        [Command("remindme")]
+        public async Task RemindMeAsync(int minutes)
+        {
+            await ReplyAsync($"Remainder set after {minutes} minutes!");
+            TimeMessage.Remainder(Context, minutes);
         }
     }
 }

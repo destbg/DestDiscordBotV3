@@ -1,8 +1,8 @@
 ﻿using static System.Console;
 
-namespace DestDiscordBotV3.Logger
+namespace DestDiscordBotV3.Common.Logging
 {
-    public class Logging : ILogging
+    public class Logger : ILogger
     {
         public void Log(string message) =>
             WriteLine(message);

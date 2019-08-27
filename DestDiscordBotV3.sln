@@ -11,13 +11,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Program", "Program", "{7F26
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DestDiscordBotV3", "src\Program\DestDiscordBotV3\DestDiscordBotV3.csproj", "{0528403D-0F0B-40F5-B7B5-A7814C8155D2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DestDiscordBotV3.Logger", "src\Service\DestDiscordBotV3.Logger\DestDiscordBotV3.Logger.csproj", "{5FD6BD50-7FDB-44C5-B185-746B662E5197}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DestDiscordBotV3.Data", "src\Data\DestDiscordBotV3.Data\DestDiscordBotV3.Data.csproj", "{A1623025-2EDF-4E95-BECF-0F05B79589B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DestDiscordBotV3.Data", "src\Data\DestDiscordBotV3.Data\DestDiscordBotV3.Data.csproj", "{A1623025-2EDF-4E95-BECF-0F05B79589B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DestDiscordBotV3.Model", "src\Data\DestDiscordBotV3.Model\DestDiscordBotV3.Model.csproj", "{1C796195-B87C-424A-ADF5-0B6492D24C0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DestDiscordBotV3.Model", "src\Data\DestDiscordBotV3.Model\DestDiscordBotV3.Model.csproj", "{1C796195-B87C-424A-ADF5-0B6492D24C0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DestDiscordBotV3.Service", "src\Service\DestDiscordBotV3.Service\DestDiscordBotV3.Service.csproj", "{EC0EB927-6D1F-4C94-BC96-C9AB326B019B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DestDiscordBotV3.Service", "src\Service\DestDiscordBotV3.Service\DestDiscordBotV3.Service.csproj", "{EC0EB927-6D1F-4C94-BC96-C9AB326B019B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DestDiscordBotV3.Common", "src\Service\DestDiscordBotV3.Common\DestDiscordBotV3.Common.csproj", "{6FB07678-F87A-4020-91B1-1FC1314ED60A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,6 @@ Global
 		{0528403D-0F0B-40F5-B7B5-A7814C8155D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0528403D-0F0B-40F5-B7B5-A7814C8155D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0528403D-0F0B-40F5-B7B5-A7814C8155D2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5FD6BD50-7FDB-44C5-B185-746B662E5197}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5FD6BD50-7FDB-44C5-B185-746B662E5197}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5FD6BD50-7FDB-44C5-B185-746B662E5197}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5FD6BD50-7FDB-44C5-B185-746B662E5197}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A1623025-2EDF-4E95-BECF-0F05B79589B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A1623025-2EDF-4E95-BECF-0F05B79589B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1623025-2EDF-4E95-BECF-0F05B79589B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,16 +41,20 @@ Global
 		{EC0EB927-6D1F-4C94-BC96-C9AB326B019B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC0EB927-6D1F-4C94-BC96-C9AB326B019B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC0EB927-6D1F-4C94-BC96-C9AB326B019B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FB07678-F87A-4020-91B1-1FC1314ED60A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FB07678-F87A-4020-91B1-1FC1314ED60A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FB07678-F87A-4020-91B1-1FC1314ED60A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FB07678-F87A-4020-91B1-1FC1314ED60A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0528403D-0F0B-40F5-B7B5-A7814C8155D2} = {7F269EC7-798E-4617-802A-FE9F794AD775}
-		{5FD6BD50-7FDB-44C5-B185-746B662E5197} = {92D7C693-3A09-47BF-B079-5E5AFD88D27B}
 		{A1623025-2EDF-4E95-BECF-0F05B79589B3} = {C383763C-F45D-4A65-9156-78DA5693A05B}
 		{1C796195-B87C-424A-ADF5-0B6492D24C0F} = {C383763C-F45D-4A65-9156-78DA5693A05B}
 		{EC0EB927-6D1F-4C94-BC96-C9AB326B019B} = {92D7C693-3A09-47BF-B079-5E5AFD88D27B}
+		{6FB07678-F87A-4020-91B1-1FC1314ED60A} = {92D7C693-3A09-47BF-B079-5E5AFD88D27B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {90D102F4-705F-4282-9482-E0FA4D15EA08}

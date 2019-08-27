@@ -7,9 +7,8 @@ namespace DestDiscordBotV3.Model
     {
         public string Prefix { get; set; }
 
-        public CommandContextWithPrefix(DiscordSocketClient client, SocketUserMessage msg, string prefix) : base(client, msg)
+        public CommandContextWithPrefix(DiscordSocketClient client, SocketUserMessage msg) : base(client, msg)
         {
-            Prefix = prefix;
         }
     }
 }

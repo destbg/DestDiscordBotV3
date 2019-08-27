@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace DestDiscordBotV3.Model
+﻿namespace DestDiscordBotV3.Model
 {
     public class EightBall
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string Msg { get; set; }
     }
 }

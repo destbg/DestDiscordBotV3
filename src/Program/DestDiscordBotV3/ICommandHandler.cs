@@ -5,6 +5,6 @@ namespace DestDiscordBotV3
 {
     public interface ICommandHandler
     {
-        Task Initialize(DiscordSocketClient client);
+        Task Initialize();
     }
 }

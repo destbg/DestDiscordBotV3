@@ -1,4 +1,4 @@
-﻿using DestDiscordBotV3.Logger;
+﻿using DestDiscordBotV3.Common.Logging;
 using Discord.WebSocket;
 using System;
 using System.Threading.Tasks;
@@ -24,7 +24,7 @@ namespace DestDiscordBotV3
             await _client.LoginAsync(Discord.TokenType.Bot, token);
             await _client.StartAsync();
             await _client.SetGameAsync("Try dest!help");
-            await _handler.Initialize(_client);
+            await _handler.Initialize();
             await Task.Delay(-1);
         }
     }

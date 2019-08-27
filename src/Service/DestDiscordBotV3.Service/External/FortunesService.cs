@@ -20,7 +20,7 @@ namespace DestDiscordBotV3.Service.External
         public async Task FortuneAsync()
         {
             var list = await _fortune.GetAllToList();
-            await ReplyAsync($"**:crystal_ball: {list[new Random().Next(list.Count)]}**");
+            await ReplyAsync($"**:crystal_ball: {list[new Random().Next(list.Count)].Msg}**");
         }
     }
 }

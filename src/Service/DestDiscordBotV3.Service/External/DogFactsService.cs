@@ -19,7 +19,7 @@ namespace DestDiscordBotV3.Service.External
         public async Task DogFactsAsync()
         {
             var list = await _dogFact.GetAllToList();
-            await ReplyAsync($"**:dog: {list[new Random().Next(list.Count)]}**");
+            await ReplyAsync($"**:dog: {list[new Random().Next(list.Count)].Msg}**");
         }
     }
 }

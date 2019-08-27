@@ -1,13 +1,13 @@
 ﻿using Discord;
 using System.Threading.Tasks;
 
-namespace DestDiscordBotV3.Logger
+namespace DestDiscordBotV3.Common.Logging
 {
     public class DiscordLogger : IDiscordLogger
     {
-        private readonly ILogging _logger;
+        private readonly ILogger _logger;
 
-        public DiscordLogger(ILogging logger)
+        public DiscordLogger(ILogger logger)
         {
             _logger = logger;
         }

@@ -1,7 +1,9 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using DestDiscordBotV3.Common.Guild;
+using DestDiscordBotV3.Common.Logging;
+using DestDiscordBotV3.Common.Score;
 using DestDiscordBotV3.Data;
-using DestDiscordBotV3.Logger;
 using DestDiscordBotV3.Service.Internal;
 using Discord.Commands;
 using Discord.WebSocket;
@@ -17,11 +19,11 @@ namespace DestDiscordBotV3
         public DInjection()
         {
             var builder = new ContainerBuilder();
+            var client = new DiscordSocketClient();
+
+            builder.RegisterInstance(client);
 
             // Register Types
-            builder.RegisterType<DiscordSocketClient>();
-            builder.RegisterType<Logging>().As<ILogging>();
-            builder.RegisterType<DiscordLogger>().As<IDiscordLogger>();
             builder.RegisterType<CommandService>();
             builder.RegisterType<CommandHandler>().As<ICommandHandler>();
             builder.RegisterType<Connection>().As<IConnection>();
@@ -31,6 +33,11 @@ namespace DestDiscordBotV3
             builder.RegisterGeneric(typeof(Repository<>))
                 .As(typeof(IRepository<>))
                 .InstancePerDependency();
+
+            builder.RegisterAssemblyTypes(typeof(UserFactory).Assembly,
+                typeof(DiscordLogger).Assembly,
+                typeof(GuildPrefix).Assembly)
+                .AsImplementedInterfaces();
 
             //Register Provider
             builder.RegisterInstance(CreateProvider(db));
@@ -51,7 +58,6 @@ namespace DestDiscordBotV3
                 .InstancePerDependency();
             //Register Factories
             containerBuilder.RegisterAssemblyTypes(typeof(ReportFactory).Assembly)
-                .Where(w => w.Name.EndsWith("Factory"))
                 .AsImplementedInterfaces();
             return new AutofacServiceProvider(containerBuilder.Build());
         }

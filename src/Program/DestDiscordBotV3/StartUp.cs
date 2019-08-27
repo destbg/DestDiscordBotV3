@@ -35,14 +35,22 @@ namespace DestDiscordBotV3
             if (!File.Exists("Resources/CatFacts.txt"))
                 return;
             var list = await File.ReadAllLinesAsync("Resources/CatFacts.txt");
-            foreach (var item in list)
+            for (int i = 0; i < list.Length; i++)
             {
-                var result = await catFact.GetByExpression(f => f.Msg == item);
+                CatFact result;
+                try
+                {
+                    result = await catFact.GetByExpression(f => f.Msg == list[i]);
+                }
+                catch
+                {
+                    result = null;
+                }
                 if (result == null)
                     await catFact.Create(new CatFact
                     {
-                        Id = Guid.NewGuid(),
-                        Msg = item
+                        Id = i + 1,
+                        Msg = list[i]
                     });
             }
         }
@@ -52,14 +60,22 @@ namespace DestDiscordBotV3
             if (!File.Exists("Resources/8ballAnswers.txt"))
                 return;
             var list = await File.ReadAllLinesAsync("Resources/8ballAnswers.txt");
-            foreach (var item in list)
+            for (int i = 0; i < list.Length; i++)
             {
-                var result = await eightBall.GetByExpression(f => f.Msg == item);
+                EightBall result;
+                try
+                {
+                    result = await eightBall.GetByExpression(f => f.Msg == list[i]);
+                }
+                catch
+                {
+                    result = null;
+                }
                 if (result == null)
                     await eightBall.Create(new EightBall
                     {
-                        Id = Guid.NewGuid(),
-                        Msg = item
+                        Id = i + 1,
+                        Msg = list[i]
                     });
             }
         }
@@ -69,31 +85,47 @@ namespace DestDiscordBotV3
             if (!File.Exists("Resources/DogFacts.txt"))
                 return;
             var list = await File.ReadAllLinesAsync("Resources/DogFacts.txt");
-            foreach (var item in list)
+            for (int i = 0; i < list.Length; i++)
             {
-                var result = await dogFact.GetByExpression(f => f.Msg == item);
+                DogFact result;
+                try
+                {
+                    result = await dogFact.GetByExpression(f => f.Msg == list[i]);
+                }
+                catch
+                {
+                    result = null;
+                }
                 if (result == null)
                     await dogFact.Create(new DogFact
                     {
-                        Id = Guid.NewGuid(),
-                        Msg = item
+                        Id = i + 1,
+                        Msg = list[i]
                     });
             }
         }
 
-        private static async Task CheckFortunes(IRepository<Fortune> eightBall)
+        private static async Task CheckFortunes(IRepository<Fortune> fortune)
         {
             if (!File.Exists("Resources/Fortunes.txt"))
                 return;
             var list = await File.ReadAllLinesAsync("Resources/Fortunes.txt");
-            foreach (var item in list)
+            for (int i = 0; i < list.Length; i++)
             {
-                var result = await eightBall.GetByExpression(f => f.Msg == item);
+                Fortune result;
+                try
+                {
+                    result = await fortune.GetByExpression(f => f.Msg == list[i]);
+                }
+                catch
+                {
+                    result = null;
+                }
                 if (result == null)
-                    await eightBall.Create(new Fortune
+                    await fortune.Create(new Fortune
                     {
-                        Id = Guid.NewGuid(),
-                        Msg = item
+                        Id = i + 1,
+                        Msg = list[i]
                     });
             }
         }

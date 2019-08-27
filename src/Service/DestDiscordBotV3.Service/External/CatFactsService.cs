@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace DestDiscordBotV3.Service.External
 {
-    [Group("catfacts")]
     public class CatFactsService : ModuleBase<CommandContextWithPrefix>
     {
         private readonly IRepository<CatFact> _catFact;
@@ -16,11 +15,11 @@ namespace DestDiscordBotV3.Service.External
             _catFact = catFact ?? throw new ArgumentNullException(nameof(catFact));
         }
 
-        [Command]
+        [Command("catfacts")]
         public async Task CatFactsAsync()
         {
             var list = await _catFact.GetAllToList();
-            await ReplyAsync($"**:cat: {list[new Random().Next(list.Count)]}**");
+            await ReplyAsync($"**:cat: {list[new Random().Next(list.Count)].Msg}**");
         }
     }
 }
