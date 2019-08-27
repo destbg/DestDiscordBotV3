@@ -4,11 +4,15 @@ using DestDiscordBotV3.Common.Guild;
 using DestDiscordBotV3.Common.Logging;
 using DestDiscordBotV3.Common.Score;
 using DestDiscordBotV3.Data;
+using DestDiscordBotV3.Service.Extension;
+using DestDiscordBotV3.Service.Interface;
 using DestDiscordBotV3.Service.Internal;
+using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using MongoDB.Driver;
 using System;
+using Victoria;
 
 namespace DestDiscordBotV3
 {
@@ -19,12 +23,24 @@ namespace DestDiscordBotV3
         public DInjection()
         {
             var builder = new ContainerBuilder();
-            var client = new DiscordSocketClient();
+            var client = new DiscordSocketClient(
+                new DiscordSocketConfig
+                {
+                    AlwaysDownloadUsers = true,
+                    MessageCacheSize = 50,
+                    LogLevel = LogSeverity.Debug
+                });
+            var service = new CommandService(
+                new CommandServiceConfig
+                {
+                    LogLevel = LogSeverity.Verbose,
+                    CaseSensitiveCommands = false
+                });
 
-            builder.RegisterInstance(client);
+            builder.RegisterInstance(client).SingleInstance();
+            builder.RegisterInstance(service).SingleInstance();
 
             // Register Types
-            builder.RegisterType<CommandService>();
             builder.RegisterType<CommandHandler>().As<ICommandHandler>();
             builder.RegisterType<Connection>().As<IConnection>();
 
@@ -40,7 +56,7 @@ namespace DestDiscordBotV3
                 .AsImplementedInterfaces();
 
             //Register Provider
-            builder.RegisterInstance(CreateProvider(db));
+            builder.RegisterInstance(CreateProvider(db, client));
 
             _container = builder.Build();
         }
@@ -48,18 +64,27 @@ namespace DestDiscordBotV3
         public T Resolve<T>() =>
             _container.Resolve<T>();
 
-        private IServiceProvider CreateProvider(IMongoDatabase db)
+        private IServiceProvider CreateProvider(IMongoDatabase db, DiscordSocketClient client)
         {
-            var containerBuilder = new ContainerBuilder();
+            var builder = new ContainerBuilder();
 
-            containerBuilder.RegisterInstance(db);
-            containerBuilder.RegisterGeneric(typeof(Repository<>))
+            // For Music Integration
+            builder.RegisterInstance(client).SingleInstance();
+            builder.RegisterType<LavaRestClient>().SingleInstance();
+            builder.RegisterType<LavaSocketClient>().SingleInstance();
+            builder.RegisterType<MusicHandler>()
+                .As<IMusicHandler>()
+                .SingleInstance();
+
+            builder.RegisterInstance(db);
+            builder.RegisterGeneric(typeof(Repository<>))
                 .As(typeof(IRepository<>))
                 .InstancePerDependency();
-            //Register Factories
-            containerBuilder.RegisterAssemblyTypes(typeof(ReportFactory).Assembly)
+
+            // Register Factories
+            builder.RegisterAssemblyTypes(typeof(ReportFactory).Assembly)
                 .AsImplementedInterfaces();
-            return new AutofacServiceProvider(containerBuilder.Build());
+            return new AutofacServiceProvider(builder.Build());
         }
     }
 }

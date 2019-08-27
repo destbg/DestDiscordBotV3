@@ -2,8 +2,10 @@
 using DestDiscordBotV3.Common.Score;
 using DestDiscordBotV3.Model;
 using DestDiscordBotV3.Service.External;
+using DestDiscordBotV3.Service.Interface;
 using Discord.Commands;
 using Discord.WebSocket;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 
@@ -27,10 +29,10 @@ namespace DestDiscordBotV3
             _service.AddModulesAsync(typeof(HelpService).Assembly, provider);
         }
 
-        public Task Initialize()
+        public async Task Initialize()
         {
             _client.MessageReceived += HandleCommandAsync;
-            return Task.CompletedTask;
+            await _provider.GetRequiredService<IMusicHandler>().Initialize();
         }
 
         private async Task HandleCommandAsync(SocketMessage s)
