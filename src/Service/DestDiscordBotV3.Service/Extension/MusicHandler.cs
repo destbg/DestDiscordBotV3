@@ -54,9 +54,9 @@ namespace DestDiscordBotV3.Service.Extension
 
             if (pos == -1 && track == null)
             {
-                var builder = new StringBuilder($"Do **{prefix}play 1-5** to choose one of the tracks!\n");
-                for (int i = 0; i < tracks.Length && i <= 5; i++)
-                    builder.Append($"**{i + 1}:** {tracks[i].Title} {string.Format("{0:t}", tracks[i].Length)}\n");
+                var builder = new StringBuilder($"**Do `{prefix}play 1-5` to choose one of the tracks!**\n");
+                for (int i = 0; i < tracks.Length && i < 5; i++)
+                    builder.Append($"**{i + 1}:** {tracks[i].Title} **({(tracks[i].Length.Hours > 0 ? tracks[i].Length.ToString(@"hh\:mm\:ss") : tracks[i].Length.ToString(@"mm\:ss"))})**\n");
                 return (true, builder.ToString());
             }
 
@@ -71,7 +71,7 @@ namespace DestDiscordBotV3.Service.Extension
             else
             {
                 await _player.PlayAsync(track);
-                return (false, $"Now Playing: {track.Title}");
+                return (false, $"Now Playing: **{track.Title}**");
             }
         }
 
