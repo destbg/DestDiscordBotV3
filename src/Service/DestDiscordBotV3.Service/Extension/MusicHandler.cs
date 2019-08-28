@@ -31,6 +31,22 @@ namespace DestDiscordBotV3.Service.Extension
             return Task.CompletedTask;
         }
 
+        public async Task UserVoiceStateUpdated(SocketUser user, SocketVoiceState lastVoice, SocketVoiceState newVoice)
+        {
+            if (lastVoice.VoiceChannel != null && lastVoice.VoiceChannel.GetUser(_client.CurrentUser.Id) != null)
+            {
+                var player = _lavaSocketClient.GetPlayer(lastVoice.VoiceChannel.Guild.Id);
+                if (player != null && !lastVoice.VoiceChannel.Users.Where(w => !w.IsBot).Any() && !player.IsPaused)
+                    await player.PauseAsync();
+            }
+            else if (newVoice.VoiceChannel != null && newVoice.VoiceChannel.GetUser(_client.CurrentUser.Id) != null)
+            {
+                var player = _lavaSocketClient.GetPlayer(newVoice.VoiceChannel.Guild.Id);
+                if (player != null && newVoice.VoiceChannel.Users.Where(w => !w.IsBot).Any() && player.IsPaused)
+                    await player.ResumeAsync();
+            }
+        }
+
         public async Task LeaveAsync(SocketVoiceChannel voiceChannel)
             => await _lavaSocketClient.DisconnectAsync(voiceChannel);
 
@@ -144,7 +160,12 @@ namespace DestDiscordBotV3.Service.Extension
         }
 
         private async Task ClientReadyAsync() =>
-            await _lavaSocketClient.StartAsync(_client);
+            await _lavaSocketClient.StartAsync(_client,
+                new Configuration
+                {
+                    AutoDisconnect = true,
+                    InactivityTimeout = TimeSpan.FromSeconds(30)
+                });
 
         private async Task TrackFinished(LavaPlayer player, LavaTrack track, TrackEndReason reason)
         {

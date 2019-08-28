@@ -32,7 +32,9 @@ namespace DestDiscordBotV3
         public async Task Initialize()
         {
             _client.MessageReceived += HandleCommandAsync;
-            await _provider.GetRequiredService<IMusicHandler>().Initialize();
+            var musicHandler = _provider.GetRequiredService<IMusicHandler>();
+            await musicHandler.Initialize();
+            _client.UserVoiceStateUpdated += musicHandler.UserVoiceStateUpdated;
         }
 
         private async Task HandleCommandAsync(SocketMessage s)

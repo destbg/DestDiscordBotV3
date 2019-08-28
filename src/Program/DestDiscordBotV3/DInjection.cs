@@ -33,7 +33,7 @@ namespace DestDiscordBotV3
             var service = new CommandService(
                 new CommandServiceConfig
                 {
-                    LogLevel = LogSeverity.Verbose,
+                    LogLevel = LogSeverity.Debug,
                     CaseSensitiveCommands = false
                 });
 

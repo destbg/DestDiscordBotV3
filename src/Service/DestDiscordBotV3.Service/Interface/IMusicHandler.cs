@@ -7,6 +7,7 @@ namespace DestDiscordBotV3.Service.Interface
     public interface IMusicHandler
     {
         Task Initialize();
+        Task UserVoiceStateUpdated(SocketUser user, SocketVoiceState botVoice, SocketVoiceState userVoice);
 
         Task LeaveAsync(SocketVoiceChannel voiceChannel);
 
