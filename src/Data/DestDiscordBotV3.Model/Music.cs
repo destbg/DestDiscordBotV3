@@ -1,8 +1,11 @@
-﻿namespace DestDiscordBotV3.Model
+﻿using System;
+
+namespace DestDiscordBotV3.Model
 {
     public class Music
     {
-        public ulong Id { get; set; }
+        public Guid Id { get; set; }
         public string Query { get; set; }
+        public ulong GuildId { get; set; }
     }
 }

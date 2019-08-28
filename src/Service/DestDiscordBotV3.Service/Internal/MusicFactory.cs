@@ -1,5 +1,6 @@
 ﻿using DestDiscordBotV3.Model;
 using DestDiscordBotV3.Service.Interface;
+using System;
 
 namespace DestDiscordBotV3.Service.Internal
 {
@@ -8,7 +9,8 @@ namespace DestDiscordBotV3.Service.Internal
         public Music Create(ulong id, string query) =>
             new Music
             {
-                Id = id,
+                Id = Guid.NewGuid(),
+                GuildId = id,
                 Query = query
             };
     }

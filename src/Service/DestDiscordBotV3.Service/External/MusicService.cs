@@ -51,9 +51,10 @@ namespace DestDiscordBotV3.Service.External
             if (listTracks)
             {
                 await _music.Delete(Context.Guild.Id);
-                await _music.Create(_musicFactory.Create(Context.Guild.Id, query));
+                var music = _musicFactory.Create(Context.Guild.Id, query);
+                await _music.Create(music);
 #pragma warning disable CS4014
-                TimedFunction.RemoveMusic(_music, Context.Guild.Id, 30);
+                TimedFunction.RemoveMusic(_music, music.Id, 30);
 #pragma warning restore CS4014
             }
             await ReplyAsync(message);
@@ -73,7 +74,7 @@ namespace DestDiscordBotV3.Service.External
                 await ReplyAsync("You can only choose between 1 to 5");
                 return;
             }
-            var music = await _music.GetById(Context.Guild.Id);
+            var music = await _music.GetByExpression(f => f.GuildId == Context.Guild.Id);
             await _music.Delete(Context.Guild.Id);
             var (_, message) = await _musicHandler.PlayAsync(user.VoiceChannel, Context.Channel as ITextChannel, music.Query, Context.Guild.Id, Context.Prefix, track - 1);
             await ReplyAsync(message);

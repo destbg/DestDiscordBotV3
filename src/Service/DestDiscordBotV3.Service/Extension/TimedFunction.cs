@@ -22,10 +22,10 @@ namespace DestDiscordBotV3.Service.Extension
             await context.Channel.SendMessageAsync($"{context.User.Mention} Times up!");
         }
 
-        public static async Task RemoveMusic(IRepository<Music> music, ulong guildId, int seconds)
+        public static async Task RemoveMusic(IRepository<Music> music, Guid id, int seconds)
         {
             await Task.Delay(seconds * 1000);
-            await music.Delete(guildId);
+            await music.Delete(id);
         }
     }
 }
