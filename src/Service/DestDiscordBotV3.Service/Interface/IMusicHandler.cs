@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
-using Discord;
+﻿using Discord;
 using Discord.WebSocket;
+using System.Threading.Tasks;
 
 namespace DestDiscordBotV3.Service.Interface
 {
@@ -10,7 +10,7 @@ namespace DestDiscordBotV3.Service.Interface
         Task Initialize();
         Task LeaveAsync(SocketVoiceChannel voiceChannel);
         Task<string> PauseOrResumeAsync(ulong guildId);
-        Task<string> PlayAsync(string query, ulong guildId);
+        Task<(bool, string)> PlayAsync(string query, ulong guildId, string prefix, int pos = -1);
         Task<string> ResumeAsync(ulong guildId);
         Task<string> SetVolumeAsync(int vol, ulong guildId);
         Task<string> SkipAsync(ulong guildId);

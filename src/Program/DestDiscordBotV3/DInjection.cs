@@ -70,11 +70,10 @@ namespace DestDiscordBotV3
 
             // For Music Integration
             builder.RegisterInstance(client).SingleInstance();
-            builder.RegisterType<LavaRestClient>().SingleInstance();
+            builder.RegisterType<LavaRestClient>();
             builder.RegisterType<LavaSocketClient>().SingleInstance();
             builder.RegisterType<MusicHandler>()
-                .As<IMusicHandler>()
-                .SingleInstance();
+                .As<IMusicHandler>();
 
             builder.RegisterInstance(db);
             builder.RegisterGeneric(typeof(Repository<>))

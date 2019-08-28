@@ -3,6 +3,7 @@ using Discord;
 using Discord.WebSocket;
 using System;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Victoria;
 using Victoria.Entities;
@@ -36,26 +37,41 @@ namespace DestDiscordBotV3.Service.Extension
         public async Task LeaveAsync(SocketVoiceChannel voiceChannel)
             => await _lavaSocketClient.DisconnectAsync(voiceChannel);
 
-        public async Task<string> PlayAsync(string query, ulong guildId)
+        public async Task<(bool, string)> PlayAsync(string query, ulong guildId, string prefix, int pos = -1)
         {
             var _player = _lavaSocketClient.GetPlayer(guildId);
             var results = await _lavaRestClient.SearchYouTubeAsync(query);
             if (results.LoadType == LoadType.NoMatches || results.LoadType == LoadType.LoadFailed)
+                return (false, "No matches found.");
+
+            LavaTrack track = null;
+
+            if (Uri.TryCreate(query, UriKind.Absolute, out var uriResult) &&
+                (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps))
+                track = results.Tracks.FirstOrDefault();
+
+            var tracks = results.Tracks.ToArray();
+
+            if (pos == -1 && track == null)
             {
-                return "No matches found.";
+                var builder = new StringBuilder($"Do **{prefix}play 1-5** to choose one of the tracks!\n");
+                for (int i = 0; i < tracks.Length && i <= 5; i++)
+                    builder.Append($"**{i + 1}:** {tracks[i].Title} {string.Format("{0:t}", tracks[i].Length)}\n");
+                return (true, builder.ToString());
             }
 
-            var track = results.Tracks.FirstOrDefault();
+            if (track == null)
+                track = tracks[pos];
 
             if (_player.IsPlaying)
             {
                 _player.Queue.Enqueue(track);
-                return $"{track.Title} has been added to the queue.";
+                return (false, $"{track.Title} has been added to the queue.");
             }
             else
             {
                 await _player.PlayAsync(track);
-                return $"Now Playing: {track.Title}";
+                return (false, $"Now Playing: {track.Title}");
             }
         }
 

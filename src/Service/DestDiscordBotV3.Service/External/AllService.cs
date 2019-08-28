@@ -110,7 +110,9 @@ namespace DestDiscordBotV3.Service.External
         public async Task RemindMeAsync(int minutes)
         {
             await ReplyAsync($"Remainder set after {minutes} minutes!");
-            TimeMessage.Remainder(Context, minutes);
+#pragma warning disable CS4014
+            TimedFunction.Remainder(Context, minutes);
+            #pragma warning restore CS4014
         }
     }
 }
