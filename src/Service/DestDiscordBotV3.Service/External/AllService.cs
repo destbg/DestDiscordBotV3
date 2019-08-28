@@ -103,7 +103,7 @@ namespace DestDiscordBotV3.Service.External
         }
 
         [Command("time")]
-        public async Task HourAsync() => 
+        public async Task HourAsync() =>
             await ReplyAsync($"The Utc time is: **{DateTime.UtcNow.TimeOfDay}**");
 
         [Command("remindme")]
@@ -112,7 +112,7 @@ namespace DestDiscordBotV3.Service.External
             await ReplyAsync($"Remainder set after {minutes} minutes!");
 #pragma warning disable CS4014
             TimedFunction.Remainder(Context, minutes);
-            #pragma warning restore CS4014
+#pragma warning restore CS4014
         }
     }
 }

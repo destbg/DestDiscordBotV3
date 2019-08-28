@@ -1,6 +1,5 @@
 ﻿using DestDiscordBotV3.Data;
 using DestDiscordBotV3.Model;
-using System;
 using System.IO;
 using System.Threading.Tasks;
 

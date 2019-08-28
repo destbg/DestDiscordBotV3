@@ -1,4 +1,5 @@
-﻿using DestDiscordBotV3.Service.Interface;
+﻿using DestDiscordBotV3.Model;
+using DestDiscordBotV3.Service.Interface;
 using Discord;
 using Discord.WebSocket;
 using System;
@@ -26,127 +27,124 @@ namespace DestDiscordBotV3.Service.Extension
         public Task Initialize()
         {
             _client.Ready += ClientReadyAsync;
-            _lavaSocketClient.Log += LogAsync;
             _lavaSocketClient.OnTrackFinished += TrackFinished;
             return Task.CompletedTask;
         }
 
-        public async Task ConnectAsync(SocketVoiceChannel voiceChannel, ITextChannel textChannel)
-            => await _lavaSocketClient.ConnectAsync(voiceChannel, textChannel);
-
         public async Task LeaveAsync(SocketVoiceChannel voiceChannel)
             => await _lavaSocketClient.DisconnectAsync(voiceChannel);
 
-        public async Task<(bool, string)> PlayAsync(string query, ulong guildId, string prefix, int pos = -1)
+        public async Task<(bool, string)> PlayAsync(SocketVoiceChannel voiceChannel, ITextChannel textChannel, string query, ulong guildId, string prefix, int pos = -1)
         {
-            var _player = _lavaSocketClient.GetPlayer(guildId);
-            var results = await _lavaRestClient.SearchYouTubeAsync(query);
+            var player = _lavaSocketClient.GetPlayer(guildId);
+            if (player is null)
+            {
+                await _lavaSocketClient.ConnectAsync(voiceChannel, textChannel);
+                player = _lavaSocketClient.GetPlayer(guildId);
+            }
+            LavaTrack track = null;
+            SearchResult results = null;
+            var uriResult = GetUriResult(query);
+            switch (uriResult)
+            {
+                case UriResult.PlayList:
+                    results = await _lavaRestClient.SearchTracksAsync(query, true);
+                    return (false, await MakePlayList(player, results));
+
+                case UriResult.YoutubeLink:
+                    results = await _lavaRestClient.SearchYouTubeAsync(query);
+                    track = results.Tracks.FirstOrDefault();
+                    break;
+
+                case UriResult.SoundCloud:
+                    results = await _lavaRestClient.SearchSoundcloudAsync(query);
+                    track = results.Tracks.FirstOrDefault();
+                    break;
+            }
             if (results.LoadType == LoadType.NoMatches || results.LoadType == LoadType.LoadFailed)
                 return (false, "No matches found.");
-
-            LavaTrack track = null;
-
-            if (Uri.TryCreate(query, UriKind.Absolute, out var uriResult) &&
-                (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps))
-                track = results.Tracks.FirstOrDefault();
 
             var tracks = results.Tracks.ToArray();
 
             if (pos == -1 && track == null)
-            {
-                var builder = new StringBuilder($"**Do `{prefix}play 1-5` to choose one of the tracks!**\n");
-                for (int i = 0; i < tracks.Length && i < 5; i++)
-                    builder.Append($"**{i + 1}:** {tracks[i].Title} **({(tracks[i].Length.Hours > 0 ? tracks[i].Length.ToString(@"hh\:mm\:ss") : tracks[i].Length.ToString(@"mm\:ss"))})**\n");
-                return (true, builder.ToString());
-            }
+                return (true, MakeTrackList(prefix, tracks));
 
             if (track == null)
                 track = tracks[pos];
 
-            if (_player.IsPlaying)
+            if (player.IsPlaying)
             {
-                _player.Queue.Enqueue(track);
+                player.Queue.Enqueue(track);
                 return (false, $"{track.Title} has been added to the queue.");
             }
-            else
-            {
-                await _player.PlayAsync(track);
-                return (false, $"Now Playing: **{track.Title}**");
-            }
+            await player.PlayAsync(track);
+            return (false, $"Now Playing: **{track.Title}**");
         }
 
         public async Task<string> StopAsync(ulong guildId)
         {
-            var _player = _lavaSocketClient.GetPlayer(guildId);
-            if (_player is null)
+            var player = _lavaSocketClient.GetPlayer(guildId);
+            if (player is null)
                 return "Error with Player";
-            await _player.StopAsync();
+            await player.StopAsync();
             return "Music Playback Stopped.";
         }
 
         public async Task<string> SkipAsync(ulong guildId)
         {
-            var _player = _lavaSocketClient.GetPlayer(guildId);
-            if (_player is null || _player.Queue.Items.Any())
+            var player = _lavaSocketClient.GetPlayer(guildId);
+            if (player is null || !player.Queue.Items.Any())
                 return "Nothing in queue.";
 
-            var oldTrack = _player.CurrentTrack;
-            await _player.SkipAsync();
-            return $"Skiped: {oldTrack.Title} \nNow Playing: {_player.CurrentTrack.Title}";
-        }
-
-        public async Task<string> SetVolumeAsync(int vol, ulong guildId)
-        {
-            var _player = _lavaSocketClient.GetPlayer(guildId);
-            if (_player is null)
-                return "Player isn't playing.";
-
-            if (vol > 150 || vol <= 2)
-            {
-                return "Please use a number between 2 - 150";
-            }
-
-            await _player.SetVolumeAsync(vol);
-            return $"Volume set to: {vol}";
+            var oldTrack = player.CurrentTrack;
+            await player.SkipAsync();
+            return $"Skiped: **{oldTrack.Title}** \nNow Playing: **{player.CurrentTrack.Title}**";
         }
 
         public async Task<string> PauseOrResumeAsync(ulong guildId)
         {
-            var _player = _lavaSocketClient.GetPlayer(guildId);
-            if (_player is null)
+            var player = _lavaSocketClient.GetPlayer(guildId);
+            if (player is null)
                 return "Player isn't playing.";
 
-            if (!_player.IsPaused)
+            if (!player.IsPaused)
             {
-                await _player.PauseAsync();
+                await player.PauseAsync();
                 return "Player is Paused.";
             }
             else
             {
-                await _player.ResumeAsync();
+                await player.ResumeAsync();
                 return "Playback resumed.";
             }
         }
 
         public async Task<string> ResumeAsync(ulong guildId)
         {
-            var _player = _lavaSocketClient.GetPlayer(guildId);
-            if (_player is null)
+            var player = _lavaSocketClient.GetPlayer(guildId);
+            if (player is null)
                 return "Player isn't playing.";
 
-            if (_player.IsPaused)
+            if (player.IsPaused)
             {
-                await _player.ResumeAsync();
+                await player.ResumeAsync();
                 return "Playback resumed.";
             }
 
             return "Player is not paused.";
         }
 
-        private async Task ClientReadyAsync()
+        public Task<string> Shuffle(ulong guildId)
         {
-            await _lavaSocketClient.StartAsync(_client);
+            var player = _lavaSocketClient.GetPlayer(guildId);
+            if (player is null)
+                return Task.FromResult("Player isn't playing.");
+            player.Queue.Shuffle();
+            return Task.FromResult("Player was shuffled");
         }
+
+        private async Task ClientReadyAsync() =>
+            await _lavaSocketClient.StartAsync(_client);
 
         private async Task TrackFinished(LavaPlayer player, LavaTrack track, TrackEndReason reason)
         {
@@ -162,10 +160,37 @@ namespace DestDiscordBotV3.Service.Extension
             await player.PlayAsync(nextTrack);
         }
 
-        private Task LogAsync(LogMessage logMessage)
+        private UriResult GetUriResult(string query) =>
+            Uri.TryCreate(query, UriKind.Absolute, out var uriResult) &&
+                (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps)
+                ? uriResult.Host == "www.soundcloud.com"
+                    ? UriResult.SoundCloud
+                    : uriResult.Query.Split('=', '?', '&').Contains("list") ? UriResult.PlayList : UriResult.YoutubeLink
+                : UriResult.NotUrl;
+
+        private string MakeTrackList(string prefix, LavaTrack[] tracks)
         {
-            Console.WriteLine(logMessage.Message);
-            return Task.CompletedTask;
+            var builder = new StringBuilder($"**Do `{prefix}play 1-5` to choose one of the tracks!**\n");
+            for (var i = 0; i < tracks.Length && i < 5; i++)
+                builder.Append($"**{i + 1}:** {tracks[i].Title} **({(tracks[i].Length.Hours > 0 ? tracks[i].Length.ToString(@"hh\:mm\:ss") : tracks[i].Length.ToString(@"mm\:ss"))})**\n");
+            return builder.ToString();
+        }
+
+        private async Task<string> MakePlayList(LavaPlayer player, SearchResult results)
+        {
+            if (!results.Tracks.Any())
+                return "**{results.PlaylistInfo.Name}** is empty!";
+
+            var playListTracks = results.Tracks.ToArray();
+
+            if (player.IsPlaying)
+                player.Queue.Enqueue(playListTracks[0]);
+            else await player.PlayAsync(playListTracks[0]);
+
+            for (var i = 1; i < playListTracks.Length; i++)
+                player.Queue.Enqueue(playListTracks[i]);
+
+            return $"Loaded **{results.PlaylistInfo.Name}** which has **{playListTracks.Length}** tracks";
         }
     }
 }

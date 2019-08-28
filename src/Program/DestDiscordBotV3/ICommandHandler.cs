@@ -1,5 +1,4 @@
-﻿using Discord.WebSocket;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace DestDiscordBotV3
 {

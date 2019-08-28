@@ -58,7 +58,7 @@ namespace DestDiscordBotV3.Service.External
         public async Task ScoreboardLeftUsers()
         {
             var i = 0;
-            await _user.GetAll().Where(f => f.GuildId == Context.Guild.Id).ForEach(async f => 
+            await _user.GetAll().Where(f => f.GuildId == Context.Guild.Id).ForEach(async f =>
             {
                 if (Context.Guild.GetUser(f.UserId) == null)
                 {
