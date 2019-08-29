@@ -76,6 +76,9 @@ namespace DestDiscordBotV3.Service.Extension
                     results = await _lavaRestClient.SearchSoundcloudAsync(query);
                     track = results.Tracks.FirstOrDefault();
                     break;
+                default:
+                    results = await _lavaRestClient.SearchYouTubeAsync(query);
+                    break;
             }
             if (results.LoadType == LoadType.NoMatches || results.LoadType == LoadType.LoadFailed)
                 return (false, "No matches found.");
