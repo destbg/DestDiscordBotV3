@@ -2,6 +2,7 @@
 using Autofac.Extensions.DependencyInjection;
 using DestDiscordBotV3.Common.Guild;
 using DestDiscordBotV3.Common.Logging;
+using DestDiscordBotV3.Common.Redstone;
 using DestDiscordBotV3.Common.Score;
 using DestDiscordBotV3.Data;
 using DestDiscordBotV3.Service.Extension;
@@ -52,7 +53,8 @@ namespace DestDiscordBotV3
 
             builder.RegisterAssemblyTypes(typeof(UserFactory).Assembly,
                 typeof(DiscordLogger).Assembly,
-                typeof(GuildPrefix).Assembly)
+                typeof(GuildPrefix).Assembly,
+                typeof(Repeater).Assembly)
                 .AsImplementedInterfaces();
 
             //Register Provider
