@@ -20,11 +20,7 @@ namespace DestDiscordBotV3.Service.External
             _todoFactory = todoFactory ?? throw new ArgumentNullException(nameof(todoFactory));
         }
 
-        [Command, Priority(0)]
-        public async Task Default() =>
-            await ReplyAsync($"**{Context.User.Username}**, the correct usage is: `{Context.Prefix}todo list | clear | remove <number> | add <text>`");
-
-        [Command("list"), Priority(1)]
+        [Command]
         public async Task List()
         {
             var list = await _todo.GetAllByExpression(f => f.UserId == Context.User.Id);
@@ -34,14 +30,14 @@ namespace DestDiscordBotV3.Service.External
             await ReplyAsync(builder.ToString());
         }
 
-        [Command("clear"), Priority(1)]
+        [Command("clear")]
         public async Task Clear()
         {
             await _todo.DeleteMany(f => f.UserId == Context.User.Id);
             await ReplyAsync("Your To-Do list is now empty!");
         }
 
-        [Command("remove"), Priority(1)]
+        [Command("remove")]
         public async Task Remove(int pos)
         {
             var list = await _todo.GetAllByExpression(f => f.UserId == Context.User.Id);
@@ -49,7 +45,7 @@ namespace DestDiscordBotV3.Service.External
             await ReplyAsync("Removed a to-do from your To-Do list!");
         }
 
-        [Command("add"), Priority(1)]
+        [Command("add")]
         public async Task Add([Remainder] string text)
         {
             await _todo.Create(_todoFactory.Create(Context.User.Id, text));

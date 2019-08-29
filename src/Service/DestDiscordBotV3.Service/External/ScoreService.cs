@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DestDiscordBotV3.Service.External
 {
-    [Group("scoreboard"), Alias("sB", "top", "top10")]
+    [Group("scoreboard"), Alias("sB", "top")]
     public class ScoreService : ModuleBase<CommandContextWithPrefix>
     {
         private readonly IRepository<GuildUser> _user;

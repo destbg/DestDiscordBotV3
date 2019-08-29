@@ -4,10 +4,7 @@ namespace DestDiscordBotV3
 {
     internal class Program
     {
-        private static void Main() =>
-            new Program().StartAsync().GetAwaiter().GetResult();
-
-        private async Task StartAsync()
+        private static async Task Main()
         {
             var dInjection = new DInjection();
             await StartUp.DoChecks(dInjection);

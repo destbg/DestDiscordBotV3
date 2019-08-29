@@ -16,7 +16,7 @@ namespace DestDiscordBotV3.Service.External
             _user = user ?? throw new ArgumentNullException(nameof(user));
         }
 
-        [Command("globalStats")]
+        [Command("globalStats"), Alias("gs")]
         public async Task GlobalStats(IUser user = null)
         {
             var target = user ?? Context.User;

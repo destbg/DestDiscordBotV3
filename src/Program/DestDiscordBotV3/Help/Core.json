@@ -1,0 +1,130 @@
+[
+  {
+    "Id": "ping",
+    "Description": "Test the bot's respond time",
+    "Aliases": null,
+    "Usages": [
+      ""
+    ],
+    "Examples": null
+  },
+  {
+    "Id": "report",
+    "Description": "Report a bug",
+    "Aliases": null,
+    "Usages": [
+      "<message>"
+    ],
+    "Examples": [
+      "The bot won't join my server"
+    ]
+  },
+  {
+    "Id": "wiki",
+    "Description": "Search something on Wikipedia",
+    "Aliases": null,
+    "Usages": [
+      "<query>"
+    ],
+    "Examples": [
+      "Spaghetti"
+    ]
+  },
+  {
+    "Id": "google",
+    "Description": "Google something",
+    "Aliases": null,
+    "Usages": [
+      "<query>"
+    ],
+    "Examples": [
+      "how to clean my laptop"
+    ]
+  },
+  {
+    "Id": "scoreboard",
+    "Description": "Get the guild scoreboard",
+    "Aliases": [
+      "sb",
+      "top"
+    ],
+    "Usages": [
+      "[page]"
+    ],
+    "Examples": null
+  },
+  {
+    "Id": "tag",
+    "Description": "Create a tag that responds with a message",
+    "Aliases": null,
+    "Usages": [
+      "name/list",
+      "create/change <name> <message>",
+      "remove <name>"
+    ],
+    "Examples": [
+      "create me me me big boi",
+      "me"
+    ]
+  },
+  {
+    "Id": "todo",
+    "Description": "Manage your to-do list",
+    "Aliases": null,
+    "Usages": [
+      "",
+      "clear",
+      "remove <position>",
+      "add <text>"
+    ],
+    "Examples": [
+      "add Help my mom do the dishes"
+    ]
+  },
+  {
+    "Id": "math",
+    "Description": "Solve a mathematical equation",
+    "Aliases": null,
+    "Usages": [
+      "<equation>"
+    ],
+    "Examples": [
+      "sqrt(1 + 1)"
+    ]
+  },
+  {
+    "Id": "time",
+    "Description": "Gets the current UTC time",
+    "Aliases": null,
+    "Usages": [
+      "<Rock/Paper/Scissors>"
+    ],
+    "Examples": [
+      "rock"
+    ]
+  },
+  {
+    "Id": "reminder",
+    "Description": "Reminds you after a curtain amount of minutes",
+    "Aliases": [
+      "remindme"
+    ],
+    "Usages": [
+      "<minutes> <message>"
+    ],
+    "Examples": [
+      "5 the food is ready"
+    ]
+  },
+  {
+    "Id": "globalstats",
+    "Description": "Get yours or someone else's points and level",
+    "Aliases": [
+      "gs"
+    ],
+    "Usages": [
+      "[@user]"
+    ],
+    "Examples": null
+  }
+]

@@ -1,0 +1,107 @@
+[
+  {
+    "Id": "8ball",
+    "Description": "Ask the bot about a question that can be answered with yes or no",
+    "Aliases": null,
+    "Usages": [
+      "<question>"
+    ],
+    "Examples": [
+      "will i die soon"
+    ]
+  },
+  {
+    "Id": "catfacts",
+    "Description": "Get a fact about cats",
+    "Aliases": null,
+    "Usages": [
+      ""
+    ],
+    "Examples": null
+  },
+  {
+    "Id": "dogfacts",
+    "Description": "Get a fact about dogs",
+    "Aliases": null,
+    "Usages": [
+      ""
+    ],
+    "Examples": null
+  },
+  {
+    "Id": "fortune",
+    "Description": "Get a fortune",
+    "Aliases": null,
+    "Usages": [
+      ""
+    ],
+    "Examples": null
+  },
+  {
+    "Id": "choose",
+    "Description": "Choose between 2 or more options",
+    "Aliases": null,
+    "Usages": [
+      "<option 1> | <option 2>"
+    ],
+    "Examples": [
+      "Dog | Cat | Parrot"
+    ]
+  },
+  {
+    "Id": "coin",
+    "Description": "Flips a coin",
+    "Aliases": null,
+    "Usages": [
+      ""
+    ],
+    "Examples": null
+  },
+  {
+    "Id": "dice",
+    "Description": "Roll a dice",
+    "Aliases": null,
+    "Usages": [
+      "<number>"
+    ],
+    "Examples": [
+      "10"
+    ]
+  },
+  {
+    "Id": "reverse",
+    "Description": "Reverse text",
+    "Aliases": null,
+    "Usages": [
+      "<text>"
+    ],
+    "Examples": [
+      "This is a very unique text"
+    ]
+  },
+  {
+    "Id": "rps",
+    "Description": "Rock paper scissors",
+    "Aliases": [
+      "rockPaperScissors"
+    ],
+    "Usages": [
+      "<Rock/Paper/Scissors>"
+    ],
+    "Examples": [
+      "rock"
+    ]
+  },
+  {
+    "Id": "randomperson",
+    "Description": "Get information of a random person",
+    "Aliases": [
+      "getRandomPerson",
+      "rp"
+    ],
+    "Usages": [
+      ""
+    ],
+    "Examples": null
+  }
+]

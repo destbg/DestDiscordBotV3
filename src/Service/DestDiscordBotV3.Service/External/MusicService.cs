@@ -75,7 +75,7 @@ namespace DestDiscordBotV3.Service.External
                 return;
             }
             var music = await _music.GetByExpression(f => f.GuildId == Context.Guild.Id);
-            await _music.Delete(Context.Guild.Id);
+            await _music.Delete(music.Id);
             var (_, message) = await _musicHandler.PlayAsync(user.VoiceChannel, Context.Channel as ITextChannel, music.Query, Context.Guild.Id, Context.Prefix, track - 1);
             await ReplyAsync(message);
         }

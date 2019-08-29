@@ -1,5 +1,7 @@
 ﻿using DestDiscordBotV3.Data;
 using DestDiscordBotV3.Model;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -8,124 +10,77 @@ namespace DestDiscordBotV3
     public static class StartUp
     {
         public static string GetToken() =>
-            File.ReadAllText("Resources/BotToken.txt");
+            File.ReadAllText("BotToken.txt");
 
         public static async Task DoChecks(DInjection dInjection)
         {
             // Check Bot Token
-            if (!File.Exists("Resources/BotToken.txt"))
+            if (!File.Exists("BotToken.txt"))
                 throw new IOException("File BotToken.txt not found");
-            //Check 8ball answers
-            var eightBall = dInjection.Resolve<IRepository<EightBall>>();
-            await CheckEightBall(eightBall);
-            // Check Cat Facts
-            var catFacts = dInjection.Resolve<IRepository<CatFact>>();
-            await CheckCatFacts(catFacts);
-            // Check Dog Facts
-            var dogFacts = dInjection.Resolve<IRepository<DogFact>>();
-            await CheckDogFacts(dogFacts);
-            // Check Fortunes
-            var fortunes = dInjection.Resolve<IRepository<Fortune>>();
-            await CheckFortunes(fortunes);
+
+            // Check Resources
+            var appResource = dInjection.Resolve<IRepository<AppResource>>();
+            await DoResourcesFileCheck(appResource, "Resources/8ballAnswers.txt", ResourceType.EightBall, 0);
+            await DoResourcesFileCheck(appResource, "Resources/CatFacts.txt", ResourceType.CatFact, 1000);
+            await DoResourcesFileCheck(appResource, "Resources/DogFacts.txt", ResourceType.DogFact, 2000);
+            await DoResourcesFileCheck(appResource, "Resources/Fortunes.txt", ResourceType.Fortune, 3000);
+
+            // Check Help
+            var appHelp = dInjection.Resolve<IRepository<AppHelp>>();
+            await DoHelpCheck(appHelp, "Help/Core.json", HelpType.Core);
+            await DoHelpCheck(appHelp, "Help/Fun.json", HelpType.Fun);
+            await DoHelpCheck(appHelp, "Help/Music.json", HelpType.Music);
         }
 
-        private static async Task CheckCatFacts(IRepository<CatFact> catFact)
+        private static async Task DoResourcesFileCheck(IRepository<AppResource> repository, string file, ResourceType resourceType, int add)
         {
-            if (!File.Exists("Resources/CatFacts.txt"))
+            if (!File.Exists(file))
                 return;
-            var list = await File.ReadAllLinesAsync("Resources/CatFacts.txt");
+            var list = await File.ReadAllLinesAsync(file);
             for (int i = 0; i < list.Length; i++)
             {
-                CatFact result;
+                AppResource result;
                 try
                 {
-                    result = await catFact.GetByExpression(f => f.Msg == list[i]);
+                    result = await repository.GetByExpression(f => f.Msg == list[i]);
                 }
                 catch
                 {
                     result = null;
                 }
-                if (result == null)
-                    await catFact.Create(new CatFact
+                if (result is null)
+                {
+                    await repository.Create(new AppResource
                     {
-                        Id = i + 1,
+                        Id = i + add + 1,
+                        ResourceType = resourceType,
                         Msg = list[i]
                     });
+                }
             }
         }
 
-        private static async Task CheckEightBall(IRepository<EightBall> eightBall)
+        private static async Task DoHelpCheck(IRepository<AppHelp> repository, string file, HelpType helpType)
         {
-            if (!File.Exists("Resources/8ballAnswers.txt"))
+            if (!File.Exists(file))
                 return;
-            var list = await File.ReadAllLinesAsync("Resources/8ballAnswers.txt");
-            for (int i = 0; i < list.Length; i++)
+            var list = JsonConvert.DeserializeObject<IReadOnlyList<AppHelp>>(File.ReadAllText(file));
+            for (int i = 0; i < list.Count; i++)
             {
-                EightBall result;
+                AppHelp result;
                 try
                 {
-                    result = await eightBall.GetByExpression(f => f.Msg == list[i]);
+                    result = await repository.GetById(list[i].Id);
                 }
                 catch
                 {
                     result = null;
                 }
-                if (result == null)
-                    await eightBall.Create(new EightBall
-                    {
-                        Id = i + 1,
-                        Msg = list[i]
-                    });
-            }
-        }
-
-        private static async Task CheckDogFacts(IRepository<DogFact> dogFact)
-        {
-            if (!File.Exists("Resources/DogFacts.txt"))
-                return;
-            var list = await File.ReadAllLinesAsync("Resources/DogFacts.txt");
-            for (int i = 0; i < list.Length; i++)
-            {
-                DogFact result;
-                try
+                if (result is null)
                 {
-                    result = await dogFact.GetByExpression(f => f.Msg == list[i]);
+                    list[i].HelpType = helpType;
+                    await repository.Create(list[i]);
                 }
-                catch
-                {
-                    result = null;
-                }
-                if (result == null)
-                    await dogFact.Create(new DogFact
-                    {
-                        Id = i + 1,
-                        Msg = list[i]
-                    });
-            }
-        }
-
-        private static async Task CheckFortunes(IRepository<Fortune> fortune)
-        {
-            if (!File.Exists("Resources/Fortunes.txt"))
-                return;
-            var list = await File.ReadAllLinesAsync("Resources/Fortunes.txt");
-            for (int i = 0; i < list.Length; i++)
-            {
-                Fortune result;
-                try
-                {
-                    result = await fortune.GetByExpression(f => f.Msg == list[i]);
-                }
-                catch
-                {
-                    result = null;
-                }
-                if (result == null)
-                    await fortune.Create(new Fortune
-                    {
-                        Id = i + 1,
-                        Msg = list[i]
-                    });
             }
         }
     }

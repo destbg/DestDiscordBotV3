@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="BotToken.txt" />
+    <None Remove="Help\Core.json" />
+    <None Remove="Help\Fun.json" />
+    <None Remove="Help\Music.json" />
     <None Remove="Resources\8ballAnswers.txt" />
     <None Remove="Resources\CatFacts.txt" />
     <None Remove="Resources\DogFacts.txt" />
@@ -15,10 +17,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Help\Core.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Fun.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Music.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\8ballAnswers.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\BotToken.txt">
+    <Content Include="BotToken.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\CatFacts.txt">

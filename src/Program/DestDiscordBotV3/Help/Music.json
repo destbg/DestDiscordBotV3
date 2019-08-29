@@ -1,0 +1,67 @@
+[
+  {
+    "Id": "play",
+    "Description": "Play a song or playlist from youtube or soundcloud",
+    "Aliases": null,
+    "Usages": [
+      "<link/query>"
+    ],
+    "Examples": [
+      "Never Gonna Give You Up"
+    ]
+  },
+  {
+    "Id": "skip",
+    "Description": "Skips the current songs and plays the next one",
+    "Aliases": null,
+    "Usages": [
+      ""
+    ],
+    "Examples": null
+  },
+  {
+    "Id": "shuffle",
+    "Description": "Shuffles the play-list",
+    "Aliases": null,
+    "Usages": [
+      ""
+    ],
+    "Examples": null
+  },
+  {
+    "Id": "pause",
+    "Description": "Pause the player",
+    "Aliases": null,
+    "Usages": [
+      ""
+    ],
+    "Examples": null
+  },
+  {
+    "Id": "resume",
+    "Description": "Resume the player",
+    "Aliases": null,
+    "Usages": [
+      ""
+    ],
+    "Examples": null
+  },
+  {
+    "Id": "leave",
+    "Description": "Tell the bot to leave the channel you are in",
+    "Aliases": null,
+    "Usages": [
+      ""
+    ],
+    "Examples": null
+  },
+  {
+    "Id": "stop",
+    "Description": "Stops the music and clears the play-list",
+    "Aliases": null,
+    "Usages": [
+      ""
+    ],
+    "Examples": null
+  }
+]
