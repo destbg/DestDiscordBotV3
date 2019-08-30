@@ -4,5 +4,6 @@
     {
         public ulong Id { get; set; }
         public string Prefix { get; set; }
+        public JoinSystem JoinSystem { get; set; }
     }
 }

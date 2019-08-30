@@ -140,5 +140,20 @@
     "Examples": [
       "create 1 5 days 50 dollars steam gift card"
     ]
+  },
+  {
+    "Id": "joinsystem",
+    "Description": "Manage join system. Note: Using default role will make it so if the user doesn't say anything for ~1 hour he will get that role and the channel will be deleted",
+    "Aliases": null,
+    "Usages": [
+      "setup <roles required> <command> <@join role> <@finish role> <@list of roles>",
+      "<add/remove/default/join/finish> <@role>",
+      "done <command>",
+      "rolesrequired <number>"
+    ],
+    "Examples": [
+      "setup done @invisible @member @dota @gta @warframe",
+      "add @csgo"
+    ]
   }
 ]
