@@ -1,5 +1,4 @@
 ﻿using DestDiscordBotV3.Model;
-using DestDiscordBotV3.Service.Extension;
 using Discord;
 using Discord.Commands;
 using Newtonsoft.Json;
@@ -105,14 +104,5 @@ namespace DestDiscordBotV3.Service.External
         [Command("time")]
         public async Task HourAsync() =>
             await ReplyAsync($"The Utc time is: **{DateTime.UtcNow.TimeOfDay}**");
-
-        [Command("reminder"), Alias("remindme")]
-        public async Task RemindMeAsync(int minutes, [Remainder] string message)
-        {
-            await ReplyAsync($"Remainder set for after {minutes} minutes!");
-#pragma warning disable CS4014
-            TimedFunction.Remainder(Context, message, minutes);
-#pragma warning restore CS4014
-        }
     }
 }

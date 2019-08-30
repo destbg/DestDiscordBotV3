@@ -14,18 +14,5 @@ namespace DestDiscordBotV3.Service.Extension
             await Task.Delay(seconds * 1000);
             await message.DeleteAsync();
         }
-
-        public static async Task Remainder(ICommandContext context, string message, int minutes)
-        {
-            var time = TimeSpan.FromMinutes(minutes);
-            await Task.Delay((int)time.TotalMilliseconds);
-            await context.Channel.SendMessageAsync($"{context.User.Mention} {message}");
-        }
-
-        public static async Task RemoveMusic(IRepository<Music> music, Guid id, int seconds)
-        {
-            await Task.Delay(seconds * 1000);
-            await music.Delete(id);
-        }
     }
 }

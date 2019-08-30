@@ -23,7 +23,7 @@ namespace DestDiscordBotV3.Common.Redstone
             _client = client ?? throw new ArgumentNullException(nameof(client));
         }
 
-        public async Task CheckNewUsers() => 
+        public async Task CheckNewUsersAsync() => 
             await _newUser.GetAll().ForEach(async user =>
             {
                 if (!(_client.GetChannel(user.Id) is ITextChannel channel))

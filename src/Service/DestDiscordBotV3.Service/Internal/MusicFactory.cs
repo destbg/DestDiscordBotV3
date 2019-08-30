@@ -11,7 +11,8 @@ namespace DestDiscordBotV3.Service.Internal
             {
                 Id = Guid.NewGuid(),
                 GuildId = id,
-                Query = query
+                Query = query,
+                Requested = DateTime.UtcNow
             };
     }
 }

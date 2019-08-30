@@ -53,9 +53,6 @@ namespace DestDiscordBotV3.Service.External
                 await _music.Delete(Context.Guild.Id);
                 var music = _musicFactory.Create(Context.Guild.Id, query);
                 await _music.Create(music);
-#pragma warning disable CS4014
-                TimedFunction.RemoveMusic(_music, music.Id, 30);
-#pragma warning restore CS4014
             }
             await ReplyAsync(message);
         }
