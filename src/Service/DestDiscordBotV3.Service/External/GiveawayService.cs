@@ -53,7 +53,7 @@ namespace DestDiscordBotV3.Service.External
                 await ReplyAsync("That giveaway has already ended");
                 return;
             }
-            
+
             var (embed, endTime) = GetGiveawayMessage(time, format, title);
 
             await message.ModifyAsync(f => f.Embed = embed);
@@ -144,18 +144,22 @@ namespace DestDiscordBotV3.Service.External
                 case "seconds":
                     endTime = DateTime.UtcNow.AddSeconds(time);
                     break;
+
                 case "minute":
                 case "minutes":
                     endTime = DateTime.UtcNow.AddMinutes(time);
                     break;
+
                 case "hour":
                 case "hours":
                     endTime = DateTime.UtcNow.AddHours(time);
                     break;
+
                 case "day":
                 case "days":
                     endTime = DateTime.UtcNow.AddDays(time);
                     break;
+
                 default:
                     throw new Exception();
             }
@@ -168,6 +172,6 @@ namespace DestDiscordBotV3.Service.External
                 endTime);
 
             return (embed, endTime);
-        } 
+        }
     }
 }

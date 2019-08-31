@@ -1,5 +1,4 @@
 ﻿using DestDiscordBotV3.Common.Guild;
-using DestDiscordBotV3.Common.NewUser;
 using DestDiscordBotV3.Common.Score;
 using DestDiscordBotV3.Model;
 using DestDiscordBotV3.Service.External;
@@ -16,16 +15,14 @@ namespace DestDiscordBotV3
     {
         private readonly DiscordSocketClient _client;
         private readonly CommandService _service;
-        private readonly INewUserHandler _newUser;
         private readonly IServiceProvider _provider;
         private readonly IPointsService _points;
         private readonly IGuildPrefix _prefix;
 
-        public CommandHandler(DiscordSocketClient client, CommandService service, INewUserHandler newUser, IServiceProvider provider, IPointsService points, IGuildPrefix prefix)
+        public CommandHandler(DiscordSocketClient client, CommandService service, IServiceProvider provider, IPointsService points, IGuildPrefix prefix)
         {
             _client = client ?? throw new ArgumentNullException(nameof(client));
             _service = service ?? throw new ArgumentNullException(nameof(service));
-            _newUser = newUser ?? throw new ArgumentNullException(nameof(newUser));
             _provider = provider ?? throw new ArgumentNullException(nameof(provider));
             _points = points ?? throw new ArgumentNullException(nameof(points));
             _prefix = prefix ?? throw new ArgumentNullException(nameof(prefix));
@@ -40,10 +37,6 @@ namespace DestDiscordBotV3
             var musicHandler = _provider.GetRequiredService<IMusicHandler>();
             await musicHandler.Initialize();
             _client.UserVoiceStateUpdated += musicHandler.UserVoiceStateUpdated;
-
-            // Initiate new user handler
-            _client.UserJoined += _newUser.UserJoined;
-            _client.RoleUpdated += _newUser.RoleUpdated;
         }
 
         private async Task HandleCommandAsync(SocketMessage s)
@@ -56,10 +49,6 @@ namespace DestDiscordBotV3
             context.Prefix = prefix;
 
             await _points.GivePoints(context.User.Id, context.Guild.Id).ConfigureAwait(false);
-
-            // New User Handler
-            if (await _newUser.NewUserMessage(context))
-                return;
 
             if (!(msg.HasStringPrefix(prefix, ref argPos) ||
                 msg.HasMentionPrefix(_client.CurrentUser, ref argPos)))

@@ -76,6 +76,7 @@ namespace DestDiscordBotV3.Service.Extension
                     results = await _lavaRestClient.SearchSoundcloudAsync(query);
                     track = results.Tracks.FirstOrDefault();
                     break;
+
                 default:
                     results = await _lavaRestClient.SearchYouTubeAsync(query);
                     break;

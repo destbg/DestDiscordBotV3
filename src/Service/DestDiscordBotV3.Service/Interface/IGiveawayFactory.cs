@@ -1,5 +1,5 @@
-﻿using System;
-using DestDiscordBotV3.Model;
+﻿using DestDiscordBotV3.Model;
+using System;
 
 namespace DestDiscordBotV3.Service.Interface
 {

@@ -1,8 +1,4 @@
-﻿using DestDiscordBotV3.Data;
-using DestDiscordBotV3.Model;
-using Discord;
-using Discord.Commands;
-using System;
+﻿using Discord;
 using System.Threading.Tasks;
 
 namespace DestDiscordBotV3.Service.Extension
