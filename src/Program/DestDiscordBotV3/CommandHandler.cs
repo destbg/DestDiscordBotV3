@@ -43,6 +43,7 @@ namespace DestDiscordBotV3
 
             // Initiate new user handler
             _client.UserJoined += _newUser.UserJoined;
+            _client.RoleUpdated += _newUser.RoleUpdated;
         }
 
         private async Task HandleCommandAsync(SocketMessage s)

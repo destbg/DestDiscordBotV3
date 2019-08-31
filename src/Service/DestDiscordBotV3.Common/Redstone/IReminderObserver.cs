@@ -2,8 +2,8 @@
 
 namespace DestDiscordBotV3.Common.Redstone
 {
-    public interface IMusicChecker
+    public interface IReminderObserver
     {
-        Task TenSecondsPassedAsync();
+        Task MinutePassedAsync();
     }
 }

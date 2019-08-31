@@ -17,9 +17,7 @@ namespace DestDiscordBotV3.Service.External
             else if (num < 0) return;
             var messagesDelete = await Context.Channel.GetMessagesAsync(num + 1).FlattenAsync();
             await (Context.Channel as ITextChannel).DeleteMessagesAsync(messagesDelete);
-#pragma warning disable CS4014
             TimedFunction.SendMessage(await ReplyAsync($"Purged {(num == 1 ? "a message" : $"{num} messages")} in {Context.Channel.Name}"), 5);
-#pragma warning restore CS4014
         }
 
         [Command("kick")]

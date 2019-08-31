@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace DestDiscordBotV3.Common.Redstone
 {
-    public class GiveawayHandler : IGiveawayHandler
+    public class GiveawayObserver : IGiveawayObserver
     {
         private readonly IRepository<Giveaway> _giveaway;
         private readonly DiscordSocketClient _client;
         private readonly IEmbedFactory _embedFactory;
 
-        public GiveawayHandler(IRepository<Giveaway> giveaway, DiscordSocketClient client, IEmbedFactory embedFactory)
+        public GiveawayObserver(IRepository<Giveaway> giveaway, DiscordSocketClient client, IEmbedFactory embedFactory)
         {
             _giveaway = giveaway ?? throw new ArgumentNullException(nameof(giveaway));
             _client = client ?? throw new ArgumentNullException(nameof(client));

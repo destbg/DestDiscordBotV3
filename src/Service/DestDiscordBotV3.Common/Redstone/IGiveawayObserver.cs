@@ -2,7 +2,7 @@
 
 namespace DestDiscordBotV3.Common.Redstone
 {
-    public interface IReminderHandler
+    public interface IGiveawayObserver
     {
         Task MinutePassedAsync();
     }

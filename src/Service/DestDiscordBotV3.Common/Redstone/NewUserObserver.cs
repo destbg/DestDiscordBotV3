@@ -10,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace DestDiscordBotV3.Common.Redstone
 {
-    public class NewUserChecker : INewUserChecker
+    public class NewUserObserver : INewUserObserver
     {
         private readonly IRepository<AppNewUser> _newUser;
         private readonly IRepository<AppGuild> _guild;
         private readonly DiscordSocketClient _client;
 
-        public NewUserChecker(IRepository<AppNewUser> newUser, IRepository<AppGuild> guild, DiscordSocketClient client)
+        public NewUserObserver(IRepository<AppNewUser> newUser, IRepository<AppGuild> guild, DiscordSocketClient client)
         {
             _newUser = newUser ?? throw new ArgumentNullException(nameof(newUser));
             _guild = guild ?? throw new ArgumentNullException(nameof(guild));

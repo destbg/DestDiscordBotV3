@@ -1,6 +1,5 @@
 ﻿using DestDiscordBotV3.Data;
 using DestDiscordBotV3.Model;
-using DestDiscordBotV3.Service.Extension;
 using DestDiscordBotV3.Service.Interface;
 using Discord;
 using Discord.Commands;

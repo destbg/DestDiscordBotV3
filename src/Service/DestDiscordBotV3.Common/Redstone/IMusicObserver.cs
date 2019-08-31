@@ -2,8 +2,8 @@
 
 namespace DestDiscordBotV3.Common.Redstone
 {
-    public interface IGiveawayHandler
+    public interface IMusicObserver
     {
-        Task MinutePassedAsync();
+        Task TenSecondsPassedAsync();
     }
 }

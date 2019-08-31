@@ -44,7 +44,6 @@ namespace DestDiscordBotV3.Common.NewUser
             }
 
             var joinRole = user.Guild.GetRole(appGuild.JoinSystem.JoinRole);
-
             if (joinRole is null)
             {
                 await SendMessageToDefaultChannel(user.Guild,
@@ -80,9 +79,9 @@ namespace DestDiscordBotV3.Common.NewUser
                 return;
             }
 
-            var message = await channel.SendMessageAsync(CreateMessage(roles, appGuild.JoinSystem.DoneMessage));
+            var message = await channel.SendMessageAsync($"```diff\n- {string.Join("\n- ", roles)}```\nUse **{appGuild.JoinSystem.DoneMessage}** to finish the set up!");
 
-            await _newUser.Create(_newUserFactory.Create(channel.Id, user.Id, message.Id));
+            await _newUser.Create(_newUserFactory.Create(user.Guild.Id, channel.Id, user.Id, message.Id));
         }
 
         public async Task<bool> NewUserMessage(CommandContextWithPrefix msg)
@@ -99,15 +98,17 @@ namespace DestDiscordBotV3.Common.NewUser
             if (newUser is null)
                 return false;
 
-            var appGuild = await _guild.GetById(msg.Guild.Id);
-
-            if (appGuild.JoinSystem is null)
+            if (newUser.UserId != msg.User.Id)
             {
-                await SendMessageToDefaultChannel(msg.Guild,
-                    "Join system was changed while a new user was using it");
-                await SaveNewUser(msg);
+                await msg.Message.DeleteAsync();
                 return true;
             }
+
+            var user = msg.User as SocketGuildUser;
+            var appGuild = await _guild.GetById(msg.Guild.Id);
+
+            if (await CheckJoinSystem(appGuild, msg.Guild, user, msg.Channel.Id))
+                return true;
 
             if (msg.Message.Content == appGuild.JoinSystem.DoneMessage)
             {
@@ -123,7 +124,7 @@ namespace DestDiscordBotV3.Common.NewUser
                 {
                     await SendMessageToDefaultChannel(msg.Guild,
                         "New user tried to finish selecting but the finish role was invalid");
-                    await SaveNewUser(msg);
+                    await SaveNewUser(msg.Guild, user, msg.Channel.Id);
                     return true;
                 }
                 if (!finishRole.IsEveryone)
@@ -134,14 +135,8 @@ namespace DestDiscordBotV3.Common.NewUser
             }
 
             var roles = GetRoles(appGuild.JoinSystem.Roles, msg.Guild);
-
-            if (!roles.Any())
-            {
-                await SendMessageToDefaultChannel(msg.Guild,
-                    "All listed roles were deleted while a new user was choosing them");
-                await SaveNewUser(msg);
+            if (await CheckIfRolesIsEmpty(roles, msg.Guild, user, msg.Channel.Id))
                 return true;
-            }
 
             SocketRole roleName = null;
             var content = msg.Message.Content.ToLower();
@@ -159,16 +154,49 @@ namespace DestDiscordBotV3.Common.NewUser
             }
 
             var message = await msg.Channel.GetMessageAsync(newUser.MessageId) as IUserMessage;
+
             await message.ModifyAsync(f => f.Content = message.Content.Replace("- " + roleName.Name, "+ " + roleName.Name));
-            await (msg.User as SocketGuildUser).AddRoleAsync(roleName);
+            await user.AddRoleAsync(roleName);
             await msg.Message.DeleteAsync();
             newUser.LastMessage = DateTime.UtcNow;
             await _newUser.Update(newUser, newUser.Id);
             return true;
         }
 
-        private string CreateMessage(IEnumerable<string> roles, string doneMessage) =>
-            $"```diff\n- {string.Join("\n- ", roles)}```\nUse **{doneMessage}** to finish the set up!";
+        public async Task RoleUpdated(SocketRole roleBefore, SocketRole roleNow)
+        {
+            if (roleNow.IsEveryone)
+                return;
+            foreach (var newUser in await _newUser.GetAllByExpression(f => f.GuildId == roleNow.Guild.Id))
+            {
+                if (!(roleNow.Guild.GetChannel(newUser.Id) is ITextChannel channel))
+                {
+                    await _newUser.Delete(newUser.Id);
+                    continue;
+                }
+
+                var user = roleNow.Guild.GetUser(newUser.UserId);
+                if (user is null)
+                {
+                    await _newUser.Delete(newUser.Id);
+                    continue;
+                }
+
+                var guild = await _guild.GetById(roleNow.Guild.Id);
+                if (await CheckJoinSystem(guild, roleNow.Guild, user, channel.Id))
+                    continue;
+
+                var roles = GetRoles(guild.JoinSystem.Roles, roleNow.Guild);
+                if (await CheckIfRolesIsEmpty(roles, roleNow.Guild, user, channel.Id))
+                    continue;
+
+                var message = await channel.GetMessageAsync(newUser.MessageId) as IUserMessage;
+                await message.ModifyAsync(f => f.Content = CreateMessage(user, roles, guild.JoinSystem.DoneMessage));
+            }
+        }
+
+        private string CreateMessage(SocketGuildUser user, IEnumerable<SocketRole> roles, string doneMessage) =>
+            $"```diff\n{string.Join("\n", roles.Select(s => user.Roles.FirstOrDefault(f => f == s) is null ? $"- {s.Name}" : $"+ {s.Name}"))}```\nType **{doneMessage}** to finish the set up!";
 
         private async Task SendMessageToDefaultChannel(SocketGuild guild, string message)
         {
@@ -176,18 +204,42 @@ namespace DestDiscordBotV3.Common.NewUser
             await defaultChannel.SendMessageAsync(message);
         }
 
-        private async Task SaveNewUser(CommandContextWithPrefix msg)
+        private async Task SaveNewUser(SocketGuild guild, SocketGuildUser user, ulong channelId)
         {
-            var role = msg.Guild.Roles.OrderByDescending(f => f.Members).FirstOrDefault();
+            var role = guild.Roles.OrderByDescending(f => f.Members).FirstOrDefault();
             if (role is null)
                 return;
 
-            await (msg.User as SocketGuildUser).AddRoleAsync(role);
-            await _newUser.Delete(msg.Channel.Id);
+            await user.AddRoleAsync(role);
+            await _newUser.Delete(channelId);
         }
 
         private IEnumerable<SocketRole> GetRoles(IEnumerable<ulong> roles, SocketGuild guild) =>
             roles.Select(s => guild.GetRole(s))
                 .Where(w => w != null);
+
+        private async Task<bool> CheckJoinSystem(AppGuild appGuild, SocketGuild guild, SocketGuildUser user, ulong channelId)
+        {
+            if (appGuild.JoinSystem is null)
+            {
+                await SendMessageToDefaultChannel(guild,
+                    "Join system was changed while a new user was using it");
+                await SaveNewUser(guild, user, channelId);
+                return true;
+            }
+            return false;
+        }
+
+        private async Task<bool> CheckIfRolesIsEmpty(IEnumerable<dynamic> roles, SocketGuild guild, SocketGuildUser user, ulong channelId)
+        {
+            if (!roles.Any())
+            {
+                await SendMessageToDefaultChannel(guild,
+                    "All listed roles were deleted while a new user was choosing them");
+                await SaveNewUser(guild, user, channelId);
+                return true;
+            }
+            return false;
+        }
     }
 }

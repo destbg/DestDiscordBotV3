@@ -149,7 +149,8 @@
       "setup <roles required> <command> <@join role> <@finish role> <@list of roles>",
       "<add/remove/default/join/finish> <@role>",
       "done <command>",
-      "rolesrequired <number>"
+      "rolesrequired <number>",
+      "stop"
     ],
     "Examples": [
       "setup done @invisible @member @dota @gta @warframe",

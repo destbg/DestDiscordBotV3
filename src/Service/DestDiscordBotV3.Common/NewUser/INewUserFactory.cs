@@ -4,6 +4,6 @@ namespace DestDiscordBotV3.Common.NewUser
 {
     public interface INewUserFactory
     {
-        AppNewUser Create(ulong channelId, ulong userId, ulong messageId);
+        AppNewUser Create(ulong guildId, ulong channelId, ulong userId, ulong messageId);
     }
 }

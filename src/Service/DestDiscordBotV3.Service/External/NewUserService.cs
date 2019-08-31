@@ -138,5 +138,14 @@ namespace DestDiscordBotV3.Service.External
             await _guild.Update(guild, guild.Id);
             await ReplyAsync($"Roles required is now **{rolesRequied}**");
         }
+
+        [Command("stop")]
+        public async Task StopJoinSystem()
+        {
+            var guild = await _guild.GetById(Context.Guild.Id);
+            guild.JoinSystem = null;
+            await _guild.Update(guild, guild.Id);
+            await ReplyAsync("Join system is no longer being used");
+        }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace DestDiscordBotV3.Common.Redstone
 {
-    public interface INewUserChecker
+    public interface INewUserObserver
     {
         Task CheckNewUsersAsync();
     }

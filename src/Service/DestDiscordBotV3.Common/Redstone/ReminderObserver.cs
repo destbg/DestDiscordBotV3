@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace DestDiscordBotV3.Common.Redstone
 {
-    public class ReminderHandler : IReminderHandler
+    public class ReminderObserver : IReminderObserver
     {
         private readonly IRepository<Reminder> _reminder;
         private readonly DiscordSocketClient _client;
 
-        public ReminderHandler(IRepository<Reminder> reminder, DiscordSocketClient client)
+        public ReminderObserver(IRepository<Reminder> reminder, DiscordSocketClient client)
         {
             _reminder = reminder ?? throw new ArgumentNullException(nameof(reminder));
             _client = client ?? throw new ArgumentNullException(nameof(client));

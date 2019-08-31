@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace DestDiscordBotV3.Common.Redstone
 {
-    public class MusicChecker : IMusicChecker
+    public class MusicObserver : IMusicObserver
     {
         private readonly IRepository<Music> _music;
 
-        public MusicChecker(IRepository<Music> music)
+        public MusicObserver(IRepository<Music> music)
         {
             _music = music ?? throw new ArgumentNullException(nameof(music));
         }

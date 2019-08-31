@@ -5,15 +5,15 @@ namespace DestDiscordBotV3.Common.Redstone
 {
     public class Repeater : IRepeater
     {
-        private readonly INewUserChecker _newUser;
-        private readonly IGiveawayHandler _giveaway;
-        private readonly IReminderHandler _reminder;
-        private readonly IMusicChecker _music;
+        private readonly INewUserObserver _newUser;
+        private readonly IGiveawayObserver _giveaway;
+        private readonly IReminderObserver _reminder;
+        private readonly IMusicObserver _music;
         private readonly Timer _minute;
         private readonly Timer _tenMinute;
         private readonly Timer _tenSeconds;
 
-        public Repeater(INewUserChecker newUser, IGiveawayHandler giveaway, IReminderHandler reminder, IMusicChecker music)
+        public Repeater(INewUserObserver newUser, IGiveawayObserver giveaway, IReminderObserver reminder, IMusicObserver music)
         {
             _newUser = newUser ?? throw new ArgumentNullException(nameof(newUser));
             _giveaway = giveaway ?? throw new ArgumentNullException(nameof(giveaway));
