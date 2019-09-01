@@ -1,0 +1,102 @@
+[
+  {
+    "Id": "scoreboard",
+    "Description": "Manage guild scoreboard",
+    "Aliases": [
+      "sb",
+      "top"
+    ],
+    "Usages": [
+      "<wipe/left>",
+      "remove <@user>",
+      "<give/take> <@user> <points>"
+    ],
+    "Examples": [
+      "give @Wumpus 10"
+    ]
+  },
+  {
+    "Id": "giveaway",
+    "Description": "Manage giveaways",
+    "Aliases": null,
+    "Usages": [
+      "create <winner count> <number> <days/hours/minutes/seconds> <prize>",
+      "edit <message id> <winner count> <number> <days/hours/minutes/seconds> <prize>",
+      "end <message id>",
+      "reroll <message id> <winner count>"
+    ],
+    "Examples": [
+      "create 1 5 days 50 dollars steam gift card"
+    ]
+  },
+  {
+    "Id": "prune",
+    "Description": "Delete many messages at once",
+    "Aliases": [
+      "delete",
+      "purge"
+    ],
+    "Usages": [
+      "<number>"
+    ],
+    "Examples": null
+  },
+  {
+    "Id": "kick",
+    "Description": "Kick a person out of the guild",
+    "Aliases": null,
+    "Usages": [
+      "<@user>"
+    ],
+    "Examples": null
+  },
+  {
+    "Id": "ban",
+    "Description": "Ban a person from the guild",
+    "Aliases": null,
+    "Usages": [
+      "<@user>"
+    ],
+    "Examples": null
+  },
+  {
+    "Id": "react",
+    "Description": "Make the bot react to a message",
+    "Aliases": null,
+    "Usages": [
+      "<message id> <emote> [#channel]"
+    ],
+    "Examples": null
+  },
+  {
+    "Id": "prefix",
+    "Description": "Make the bot react to a message",
+    "Aliases": [
+      "newprefix",
+      "changeprefix",
+      "pref"
+    ],
+    "Usages": [
+      "default",
+      "change <prefix>"
+    ],
+    "Examples": null
+  },
+  {
+    "Id": "customcommand",
+    "Description": "Make custom command for the guild",
+    "Aliases": [
+      "cc",
+      "cuscom"
+    ],
+    "Usages": [
+      "",
+      "<create/edit> <command> <message>",
+      "remove <command>"
+    ],
+    "Examples": [
+      "create me me me big boi",
+      ""
+    ]
+  }
+]

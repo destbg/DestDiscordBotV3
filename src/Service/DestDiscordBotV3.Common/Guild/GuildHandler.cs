@@ -5,18 +5,18 @@ using System.Threading.Tasks;
 
 namespace DestDiscordBotV3.Common.Guild
 {
-    public class GuildPrefix : IGuildPrefix
+    public class GuildHandler : IGuildHandler
     {
         private readonly IRepository<AppGuild> _guild;
         private readonly IGuildFactory _guildFactory;
 
-        public GuildPrefix(IRepository<AppGuild> guild, IGuildFactory guildFactory)
+        public GuildHandler(IRepository<AppGuild> guild, IGuildFactory guildFactory)
         {
             _guild = guild ?? throw new ArgumentNullException(nameof(guild));
             _guildFactory = guildFactory ?? throw new ArgumentNullException(nameof(guildFactory));
         }
 
-        public async Task<string> GetGuildPrefix(ulong id)
+        public async Task<AppGuild> GetGuild(ulong id)
         {
             AppGuild guild;
             try
@@ -29,10 +29,11 @@ namespace DestDiscordBotV3.Common.Guild
             }
             if (guild == null)
             {
-                await _guild.Create(_guildFactory.Create(id));
-                return "dest!";
+                var appGuild = _guildFactory.Create(id);
+                await _guild.Create(appGuild);
+                return appGuild;
             }
-            return guild.Prefix;
+            return guild;
         }
     }
 }

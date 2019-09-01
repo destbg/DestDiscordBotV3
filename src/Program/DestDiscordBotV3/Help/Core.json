@@ -54,6 +54,15 @@
     "Examples": null
   },
   {
+    "Id": "help",
+    "Description": "Help command",
+    "Aliases": null,
+    "Usages": [
+      "[command]"
+    ],
+    "Examples": null
+  },
+  {
     "Id": "tag",
     "Description": "Create a tag that responds with a message",
     "Aliases": null,
@@ -126,19 +135,5 @@
       "[@user]"
     ],
     "Examples": null
-  },
-  {
-    "Id": "giveaway",
-    "Description": "Manage giveaways",
-    "Aliases": null,
-    "Usages": [
-      "create <winner count> <number> <days/hours/minutes/seconds> <prize>",
-      "edit <message id> <winner count> <number> <days/hours/minutes/seconds> <prize>",
-      "end <message id>",
-      "reroll <message id> <winner count>"
-    ],
-    "Examples": [
-      "create 1 5 days 50 dollars steam gift card"
-    ]
   }
 ]

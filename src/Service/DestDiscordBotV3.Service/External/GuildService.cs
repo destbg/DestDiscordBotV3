@@ -8,7 +8,7 @@ namespace DestDiscordBotV3.Service.External
 {
     public class GuildService : ModuleBase<CommandContextWithPrefix>
     {
-        [Command("purge"), Alias("delete", "prune")]
+        [Command("prune"), Alias("delete", "purge")]
         [RequireBotPermission(GuildPermission.ManageMessages)]
         [RequireUserPermission(GuildPermission.Administrator)]
         public async Task PurgeAsync(int num)
@@ -16,7 +16,10 @@ namespace DestDiscordBotV3.Service.External
             if (num > 99) num = 99;
             else if (num < 0) return;
             var messagesDelete = await Context.Channel.GetMessagesAsync(num + 1).FlattenAsync();
-            await (Context.Channel as ITextChannel).DeleteMessagesAsync(messagesDelete);
+            await (Context.Channel as ITextChannel).DeleteMessagesAsync(messagesDelete, new RequestOptions
+            {
+                AuditLogReason = $"{Context.User.Username} used prune to delete {num + 1} messages"
+            });
             TimedFunction.SendMessage(await ReplyAsync($"Purged {(num == 1 ? "a message" : $"{num} messages")} in {Context.Channel.Name}"), 5);
         }
 

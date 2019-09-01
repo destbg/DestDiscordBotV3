@@ -75,6 +75,11 @@ namespace DestDiscordBotV3.Service.External
         [RequireUserPermission(GuildPermission.Administrator)]
         public async Task ScoreboardRemoveUser(IUser user)
         {
+            if (user.IsBot)
+            {
+                await ReplyAsync("Bots aren't in the scoreboard");
+                return;
+            }
             var guildUser = _user.Delete(f => f.UserId == user.Id && f.GuildId == Context.Guild.Id);
             await ReplyAsync($"```css\n[{user.Username}] was removed from the scoreboard```");
         }
@@ -83,6 +88,11 @@ namespace DestDiscordBotV3.Service.External
         [RequireUserPermission(GuildPermission.Administrator)]
         public async Task ScoreboardGivePoints(IUser user, ulong points)
         {
+            if (user.IsBot)
+            {
+                await ReplyAsync("Bots aren't in the scoreboard");
+                return;
+            }
             var guildUser = await _user.GetByExpression(f => f.UserId == user.Id && f.GuildId == Context.Guild.Id);
             guildUser.Points += points;
             await _user.Update(guildUser, guildUser.Id);
@@ -93,6 +103,11 @@ namespace DestDiscordBotV3.Service.External
         [RequireUserPermission(GuildPermission.Administrator)]
         public async Task ScoreboardTakePoints(IUser user, ulong points)
         {
+            if (user.IsBot)
+            {
+                await ReplyAsync("Bots aren't in the scoreboard");
+                return;
+            }
             var guildUser = await _user.GetByExpression(f => f.UserId == user.Id && f.GuildId == Context.Guild.Id);
             guildUser.Points -= points;
             await _user.Update(guildUser, guildUser.Id);

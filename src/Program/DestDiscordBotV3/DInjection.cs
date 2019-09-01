@@ -53,7 +53,7 @@ namespace DestDiscordBotV3
 
             builder.RegisterAssemblyTypes(typeof(UserFactory).Assembly,
                 typeof(DiscordLogger).Assembly,
-                typeof(GuildPrefix).Assembly,
+                typeof(GuildHandler).Assembly,
                 typeof(Repeater).Assembly)
                 .AsImplementedInterfaces();
 

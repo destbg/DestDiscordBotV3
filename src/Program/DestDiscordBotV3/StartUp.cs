@@ -30,6 +30,10 @@ namespace DestDiscordBotV3
             await DoHelpCheck(appHelp, "Help/Core.json", HelpType.Core);
             await DoHelpCheck(appHelp, "Help/Fun.json", HelpType.Fun);
             await DoHelpCheck(appHelp, "Help/Music.json", HelpType.Music);
+
+            // Check Admin Help
+            var appAdminHelp = dInjection.Resolve<IRepository<AppAdminHelp>>();
+            await DoAdminHelpCheck(appAdminHelp, "Help/Admin.json");
         }
 
         private static async Task DoResourcesFileCheck(IRepository<AppResource> repository, string file, ResourceType resourceType, int add)
@@ -81,6 +85,27 @@ namespace DestDiscordBotV3
                     list[i].HelpType = helpType;
                     await repository.Create(list[i]);
                 }
+            }
+        }
+
+        private static async Task DoAdminHelpCheck(IRepository<AppAdminHelp> repository, string file)
+        {
+            if (!File.Exists(file))
+                return;
+            var list = JsonConvert.DeserializeObject<IReadOnlyList<AppAdminHelp>>(File.ReadAllText(file));
+            for (int i = 0; i < list.Count; i++)
+            {
+                AppAdminHelp result;
+                try
+                {
+                    result = await repository.GetById(list[i].Id);
+                }
+                catch
+                {
+                    result = null;
+                }
+                if (result is null)
+                    await repository.Create(list[i]);
             }
         }
     }

@@ -18,7 +18,7 @@ namespace DestDiscordBotV3.Service.External
             _help = help ?? throw new ArgumentNullException(nameof(help));
         }
 
-        [Command, Priority(0)]
+        [Command]
         public async Task MainHelp()
         {
             var builder = new StringBuilder("```py\n'Commands List'```" +
@@ -38,11 +38,7 @@ namespace DestDiscordBotV3.Service.External
             await ReplyAsync(builder.ToString());
         }
 
-        [Command("help"), Priority(1)]
-        public async Task HelpHelp() =>
-            await ReplyAsync("You need help with the help command?");
-
-        [Command, Priority(0)]
+        [Command]
         public async Task DisplayHelp(string command)
         {
             var help = await _help.GetById(command.ToLower());

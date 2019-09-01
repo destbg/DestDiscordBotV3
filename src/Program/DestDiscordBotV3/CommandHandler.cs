@@ -7,6 +7,7 @@ using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DestDiscordBotV3
@@ -17,15 +18,15 @@ namespace DestDiscordBotV3
         private readonly CommandService _service;
         private readonly IServiceProvider _provider;
         private readonly IPointsService _points;
-        private readonly IGuildPrefix _prefix;
+        private readonly IGuildHandler _guild;
 
-        public CommandHandler(DiscordSocketClient client, CommandService service, IServiceProvider provider, IPointsService points, IGuildPrefix prefix)
+        public CommandHandler(DiscordSocketClient client, CommandService service, IServiceProvider provider, IPointsService points, IGuildHandler guild)
         {
             _client = client ?? throw new ArgumentNullException(nameof(client));
             _service = service ?? throw new ArgumentNullException(nameof(service));
             _provider = provider ?? throw new ArgumentNullException(nameof(provider));
             _points = points ?? throw new ArgumentNullException(nameof(points));
-            _prefix = prefix ?? throw new ArgumentNullException(nameof(prefix));
+            _guild = guild ?? throw new ArgumentNullException(nameof(guild));
             _service.AddModulesAsync(typeof(HelpService).Assembly, provider);
         }
 
@@ -45,12 +46,12 @@ namespace DestDiscordBotV3
 
             var argPos = 0;
             var context = new CommandContextWithPrefix(_client, msg);
-            var prefix = await _prefix.GetGuildPrefix(context.Guild.Id);
-            context.Prefix = prefix;
+            var guild = await _guild.GetGuild(context.Guild.Id);
+            context.Prefix = guild.Prefix;
 
             await _points.GivePoints(context.User.Id, context.Guild.Id).ConfigureAwait(false);
 
-            if (!(msg.HasStringPrefix(prefix, ref argPos) ||
+            if (!(msg.HasStringPrefix(guild.Prefix, ref argPos) ||
                 msg.HasMentionPrefix(_client.CurrentUser, ref argPos)))
                 return;
 
@@ -58,10 +59,47 @@ namespace DestDiscordBotV3
             var result = await _service.ExecuteAsync(context, argPos, _provider);
 
             if (!result.IsSuccess)
+                await HandleResultAsync(result, context, guild);
+        }
+
+        private async Task HandleResultAsync(IResult result, CommandContextWithPrefix context, AppGuild guild)
+        {
+            switch (result.Error)
             {
-                await context.Channel.SendMessageAsync("Incorrect usage of the command");
-                // TODO: Add something
+                case CommandError.UnmetPrecondition:
+                    await context.Channel.SendMessageAsync("You don't have the required permissions to use this command");
+                    return;
+                case CommandError.UnknownCommand:
+                    if (await HandleCustomCommandAsync(context, guild))
+                        return;
+                    await context.Channel.SendMessageAsync($"Unknown command, for list of commands try using {context.Prefix}help");
+                    return;
+                case CommandError.ParseFailed:
+                case CommandError.BadArgCount:
+                    await context.Channel.SendMessageAsync($"Command wasn't used properly, try using {context.Prefix}help {GetCommandFromMessage(context.Message.Content, context.Prefix)}");
+                    return;
+                case CommandError.Unsuccessful:
+                case CommandError.Exception:
+                    await context.Channel.SendMessageAsync($"Command threw an exception, try reporting it using {context.Prefix}report <message>");
+                    return;
+                default:
+                    await context.Channel.SendMessageAsync(result.ErrorReason);
+                    return;
             }
         }
+
+        private async Task<bool> HandleCustomCommandAsync(CommandContextWithPrefix context, AppGuild guild)
+        {
+            if (!guild.CustomCommands.Any())
+                return false;
+            var command = guild.CustomCommands.FirstOrDefault(f => f.Command == GetCommandFromMessage(context.Message.Content, context.Prefix));
+            if (command == null)
+                return false;
+            await context.Channel.SendMessageAsync(command.Message);
+            return true;
+        }
+
+        private string GetCommandFromMessage(string message, string prefix) =>
+            message.Split(' ')[0].Replace(prefix, "");
     }
 }
