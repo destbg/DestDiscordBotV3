@@ -114,19 +114,19 @@ namespace DestDiscordBotV3.Service.External
             await ReplyAsync($"```css\n[{user.Username}] had {(points == 1 ? "a point" : $"[{points}] pooints")} taken```");
         }
 
-        private Tuple<string, ulong>[] GetUsers(List<GuildUser> list)
+        private (string, ulong)[] GetUsers(IReadOnlyList<GuildUser> list)
         {
-            var users = new Tuple<string, ulong>[list.Count];
+            var users = new (string, ulong)[list.Count];
             for (int i = 0; i < list.Count; i++)
             {
                 var user = Context.Guild.GetUser(list[i].UserId);
                 var userName = user == null ? "User Left Guild (" + list[i].UserId + ")" : user.Username;
-                users[i] = new Tuple<string, ulong>(userName, list[i].Points);
+                users[i] = (userName, list[i].Points);
             }
             return users;
         }
 
-        private string GetScoreboardMessage(int start, int pos, List<GuildUser> list, Tuple<string, ulong>[] users)
+        private string GetScoreboardMessage(int start, int pos, IReadOnlyList<GuildUser> list, (string, ulong)[] users)
         {
             var builder = new StringBuilder($"**Guild scoreboard for __{Context.Guild.Name}__**\n```cs\n\"Top{start + 10}\"");
             for (var i = 0; i < list.Count; i++)

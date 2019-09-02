@@ -20,7 +20,7 @@ namespace DestDiscordBotV3.Service.External
         }
 
         [Command]
-        public async Task RemindMeAsync(int minutes, [Remainder] string message)
+        public async Task Reminder(int minutes, [Remainder] string message)
         {
             await ReplyAsync($"Remainder set for after {minutes} minutes!");
             await _reminder.Create(_reminderFactory.Create(Context.Channel.Id, Context.User.Id, message, DateTime.UtcNow.AddMinutes(minutes)));

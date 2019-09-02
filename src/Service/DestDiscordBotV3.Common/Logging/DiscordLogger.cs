@@ -12,9 +12,11 @@ namespace DestDiscordBotV3.Common.Logging
             _logger = logger;
         }
 
-        public Task Log(LogMessage logMsg)
+        public Task Log(LogMessage msg)
         {
-            _logger.Log(logMsg.Message);
+            if (msg.Exception is null)
+                _logger.Log($"{msg.Source}: {msg.Message}");
+            else _logger.Log($"{msg.Message}: {msg.Exception}");
             return Task.CompletedTask;
         }
     }

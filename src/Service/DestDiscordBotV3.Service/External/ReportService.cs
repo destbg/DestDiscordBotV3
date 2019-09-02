@@ -20,7 +20,7 @@ namespace DestDiscordBotV3.Service.External
         }
 
         [Command]
-        public async Task ReportAsync([Remainder] string message)
+        public async Task Report([Remainder] string message)
         {
             await _report.Create(_reportFactory.Create(Context.Guild.Name, Context.User.Username, message));
             await ReplyAsync("You successfully made a report!");

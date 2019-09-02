@@ -9,38 +9,40 @@ namespace DestDiscordBotV3.Service.External
     public class AppResourceService : ModuleBase<CommandContextWithPrefix>
     {
         private readonly IRepository<AppResource> _resource;
+        private readonly Random _random;
 
-        public AppResourceService(IRepository<AppResource> resource)
+        public AppResourceService(IRepository<AppResource> resource, Random random)
         {
             _resource = resource ?? throw new ArgumentNullException(nameof(resource));
+            _random = random ?? throw new ArgumentNullException(nameof(random));
         }
 
         [Command("catfacts")]
-        public async Task CatFactsAsync()
+        public async Task CatFacts()
         {
             var list = await _resource.GetAllByExpression(f => f.ResourceType == ResourceType.CatFact);
-            await ReplyAsync($"**:cat: {list[new Random().Next(list.Count)].Msg}**");
+            await ReplyAsync($"**:cat: {list[_random.Next(list.Count)].Msg}**");
         }
 
         [Command("dogfacts")]
-        public async Task DogFactsAsync()
+        public async Task DogFacts()
         {
             var list = await _resource.GetAllByExpression(f => f.ResourceType == ResourceType.DogFact);
-            await ReplyAsync($"**:dog: {list[new Random().Next(list.Count)].Msg}**");
+            await ReplyAsync($"**:dog: {list[_random.Next(list.Count)].Msg}**");
         }
 
         [Command("8ball")]
-        public async Task EightBallAsync([Remainder] string question)
+        public async Task EightBall([Remainder] string question)
         {
             var list = await _resource.GetAllByExpression(f => f.ResourceType == ResourceType.EightBall);
-            await ReplyAsync($":8ball: **Question:** {question}\n**Answer:** {list[new Random().Next(list.Count)].Msg}");
+            await ReplyAsync($":8ball: **Question:** {question}\n**Answer:** {list[_random.Next(list.Count)].Msg}");
         }
 
         [Command("fortune")]
-        public async Task FortuneAsync()
+        public async Task Fortune()
         {
             var list = await _resource.GetAllByExpression(f => f.ResourceType == ResourceType.Fortune);
-            await ReplyAsync($"**:crystal_ball: {list[new Random().Next(list.Count)].Msg}**");
+            await ReplyAsync($"**:crystal_ball: {list[_random.Next(list.Count)].Msg}**");
         }
     }
 }

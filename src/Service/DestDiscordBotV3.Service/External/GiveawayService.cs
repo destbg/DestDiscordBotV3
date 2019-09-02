@@ -1,4 +1,5 @@
 ﻿using DestDiscordBotV3.Data;
+using DestDiscordBotV3.Data.Extension;
 using DestDiscordBotV3.Model;
 using DestDiscordBotV3.Service.Interface;
 using Discord;
@@ -25,9 +26,30 @@ namespace DestDiscordBotV3.Service.External
         }
 
         [Command("create")]
-        public async Task CreateAsync(int winnerCount, int time, string format, [Remainder] string title)
+        public async Task Create(int winnerCount, int time, string format, [Remainder] string title)
         {
+            if (title.Length > 50)
+            {
+                await ReplyAsync("The length of the prize can be up to 50 characters");
+                return;
+            }
+            var count = await _giveaway.GetAll().Where(w => w.ChannelId == Context.Channel.Id).CountDocumentsAsync();
+            if (count > 5)
+            {
+                await ReplyAsync("You can only start up to 5 giveaways in a channel");
+                return;
+            }
             var (embed, endTime) = GetGiveawayMessage(time, format, title);
+            if (endTime.Subtract(DateTime.UtcNow).TotalDays > 30)
+            {
+                await ReplyAsync("The giveaway can't be longer then 30 days");
+                return;
+            }
+            if (embed is null)
+            {
+                await ReplyAsync("Time format is invalid");
+                return;
+            }
             var message = await ReplyAsync(":tada: GIVEAWAY :tada:", embed: embed);
             await message.AddReactionAsync(new Emoji("🎉"));
 
@@ -35,10 +57,15 @@ namespace DestDiscordBotV3.Service.External
         }
 
         [Command("edit")]
-        public async Task EditAsync(ulong messageId, int winnerCount, int time, string format, [Remainder] string title)
+        public async Task Edit(ulong messageId, int winnerCount, int time, string format, [Remainder] string title)
         {
+            if (title.Length > 50)
+            {
+                await ReplyAsync("The length of the prize can be up to 50 characters");
+                return;
+            }
             var giveaway = await _giveaway.GetByExpression(f => f.MessageId == messageId);
-            if (giveaway == null)
+            if (giveaway is null)
             {
                 await ReplyAsync("Giveaway with that message id doesn't exist");
                 return;
@@ -55,6 +82,16 @@ namespace DestDiscordBotV3.Service.External
             }
 
             var (embed, endTime) = GetGiveawayMessage(time, format, title);
+            if (embed is null)
+            {
+                await ReplyAsync("Time format is invalid");
+                return;
+            }
+            if (endTime.Subtract(DateTime.UtcNow).TotalDays > 30)
+            {
+                await ReplyAsync("The giveaway can't be longer then 30 days");
+                return;
+            }
 
             await message.ModifyAsync(f => f.Embed = embed);
             await message.AddReactionAsync(new Emoji("🎉"));
@@ -68,7 +105,7 @@ namespace DestDiscordBotV3.Service.External
         }
 
         [Command("end")]
-        public async Task EndAsync(ulong messageId)
+        public async Task End(ulong messageId)
         {
             var giveaway = await _giveaway.GetByExpression(f => f.MessageId == messageId);
             if (giveaway == null)
@@ -98,7 +135,7 @@ namespace DestDiscordBotV3.Service.External
         }
 
         [Command("reroll")]
-        public async Task ReRollAsync(ulong messageId, int winnerCount)
+        public async Task ReRoll(ulong messageId, int winnerCount)
         {
             if (!(await Context.Channel.GetMessageAsync(messageId) is IUserMessage message))
             {
@@ -161,7 +198,7 @@ namespace DestDiscordBotV3.Service.External
                     break;
 
                 default:
-                    throw new Exception();
+                    return (null, default);
             }
 
             var timeleft = endTime.Subtract(DateTime.UtcNow);

@@ -67,9 +67,10 @@
     "Description": "Create a tag that responds with a message",
     "Aliases": null,
     "Usages": [
-      "name/list",
-      "create/change <name> <message>",
-      "remove <name>"
+      "<tag>",
+      "list [@user]",
+      "create/change <tag> <message>",
+      "remove <tag>"
     ],
     "Examples": [
       "create me me me big boi",
@@ -106,7 +107,7 @@
     "Description": "Gets the current UTC time",
     "Aliases": null,
     "Usages": [
-      "<Rock/Paper/Scissors>"
+      "Rock/Paper/Scissors"
     ],
     "Examples": [
       "rock"

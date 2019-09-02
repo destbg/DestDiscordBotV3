@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\DestDiscordBotV3.Data\DestDiscordBotV3.Data.csproj" />
     <ProjectReference Include="..\..\Data\DestDiscordBotV3.Model\DestDiscordBotV3.Model.csproj" />
+    <ProjectReference Include="..\DestDiscordBotV3.Common\DestDiscordBotV3.Common.csproj" />
   </ItemGroup>
 
 </Project>

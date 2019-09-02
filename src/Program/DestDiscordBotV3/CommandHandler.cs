@@ -1,4 +1,5 @@
 ﻿using DestDiscordBotV3.Common.Guild;
+using DestDiscordBotV3.Common.Logging;
 using DestDiscordBotV3.Common.Score;
 using DestDiscordBotV3.Model;
 using DestDiscordBotV3.Service.External;
@@ -16,14 +17,16 @@ namespace DestDiscordBotV3
     {
         private readonly DiscordSocketClient _client;
         private readonly CommandService _service;
+        private readonly IDiscordLogger _logger;
         private readonly IServiceProvider _provider;
         private readonly IPointsService _points;
         private readonly IGuildHandler _guild;
 
-        public CommandHandler(DiscordSocketClient client, CommandService service, IServiceProvider provider, IPointsService points, IGuildHandler guild)
+        public CommandHandler(DiscordSocketClient client, CommandService service, IDiscordLogger logger, IServiceProvider provider, IPointsService points, IGuildHandler guild)
         {
             _client = client ?? throw new ArgumentNullException(nameof(client));
             _service = service ?? throw new ArgumentNullException(nameof(service));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _provider = provider ?? throw new ArgumentNullException(nameof(provider));
             _points = points ?? throw new ArgumentNullException(nameof(points));
             _guild = guild ?? throw new ArgumentNullException(nameof(guild));
@@ -32,6 +35,7 @@ namespace DestDiscordBotV3
 
         public async Task Initialize()
         {
+            _service.Log += _logger.Log;
             _client.MessageReceived += HandleCommandAsync;
 
             // Initiate music handler

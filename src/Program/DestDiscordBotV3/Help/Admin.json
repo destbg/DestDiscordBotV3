@@ -9,7 +9,7 @@
     "Usages": [
       "<wipe/left>",
       "remove <@user>",
-      "<give/take> <@user> <points>"
+      "give/take <@user> <points>"
     ],
     "Examples": [
       "give @Wumpus 10"
@@ -46,7 +46,7 @@
     "Description": "Kick a person out of the guild",
     "Aliases": null,
     "Usages": [
-      "<@user>"
+      "<@user> [reason]"
     ],
     "Examples": null
   },
@@ -55,7 +55,7 @@
     "Description": "Ban a person from the guild",
     "Aliases": null,
     "Usages": [
-      "<@user>"
+      "<@user> [reason]"
     ],
     "Examples": null
   },
@@ -91,7 +91,7 @@
     ],
     "Usages": [
       "",
-      "<create/edit> <command> <message>",
+      "create/edit <command> <message>",
       "remove <command>"
     ],
     "Examples": [

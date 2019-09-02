@@ -10,8 +10,8 @@ namespace DestDiscordBotV3.Service.External
     {
         [Command("prune"), Alias("delete", "purge")]
         [RequireBotPermission(GuildPermission.ManageMessages)]
-        [RequireUserPermission(GuildPermission.Administrator)]
-        public async Task PurgeAsync(int num)
+        [RequireUserPermission(GuildPermission.ManageGuild)]
+        public async Task Purge(int num)
         {
             if (num > 99) num = 99;
             else if (num < 0) return;
@@ -24,20 +24,20 @@ namespace DestDiscordBotV3.Service.External
         }
 
         [Command("kick")]
-        [RequireUserPermission(GuildPermission.Administrator)]
+        [RequireUserPermission(GuildPermission.KickMembers)]
         [RequireBotPermission(GuildPermission.KickMembers)]
-        public async Task Kick(IGuildUser user, string reason = "No reason provided.")
+        public async Task Kick(IGuildUser user, [Remainder] string reason = "No reason provided.")
         {
             await user.KickAsync(reason);
             await ReplyAsync("```css\n[" + user.Username + "] got kicked!```");
         }
 
         [Command("ban")]
-        [RequireUserPermission(GuildPermission.Administrator)]
+        [RequireUserPermission(GuildPermission.BanMembers)]
         [RequireBotPermission(GuildPermission.BanMembers)]
-        public async Task Ban(IGuildUser user, int time = 5, string reason = "No reason provided.")
+        public async Task Ban(IGuildUser user, [Remainder] string reason = "No reason provided.")
         {
-            await user.Guild.AddBanAsync(user, time, reason);
+            await user.Guild.AddBanAsync(user, reason: reason);
             await ReplyAsync("```css\n[" + user.Username + "] got banned!```");
         }
 
@@ -48,6 +48,7 @@ namespace DestDiscordBotV3.Service.External
         {
             channel = channel ?? Context.Channel;
             await (await channel.GetMessageAsync(msgId) as IUserMessage).AddReactionAsync(new Emoji(emoji));
+            await ReplyAsync("Reaction added successfully");
         }
     }
 }

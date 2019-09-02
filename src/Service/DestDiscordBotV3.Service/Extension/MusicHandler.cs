@@ -1,4 +1,5 @@
-﻿using DestDiscordBotV3.Model;
+﻿using DestDiscordBotV3.Common.Logging;
+using DestDiscordBotV3.Model;
 using DestDiscordBotV3.Service.Interface;
 using Discord;
 using Discord.WebSocket;
@@ -16,18 +17,21 @@ namespace DestDiscordBotV3.Service.Extension
         private readonly LavaRestClient _lavaRestClient;
         private readonly LavaSocketClient _lavaSocketClient;
         private readonly DiscordSocketClient _client;
+        private readonly IDiscordLogger _logger;
 
-        public MusicHandler(LavaRestClient lavaRestClient, LavaSocketClient lavaSocketClient, DiscordSocketClient client)
+        public MusicHandler(LavaRestClient lavaRestClient, LavaSocketClient lavaSocketClient, DiscordSocketClient client, IDiscordLogger logger)
         {
             _lavaRestClient = lavaRestClient ?? throw new ArgumentNullException(nameof(lavaRestClient));
             _lavaSocketClient = lavaSocketClient ?? throw new ArgumentNullException(nameof(lavaSocketClient));
             _client = client ?? throw new ArgumentNullException(nameof(client));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public Task Initialize()
         {
             _client.Ready += ClientReadyAsync;
             _lavaSocketClient.OnTrackFinished += TrackFinished;
+            _lavaSocketClient.Log += _logger.Log;
             return Task.CompletedTask;
         }
 
@@ -168,7 +172,8 @@ namespace DestDiscordBotV3.Service.Extension
                 new Configuration
                 {
                     AutoDisconnect = true,
-                    InactivityTimeout = TimeSpan.FromSeconds(30)
+                    InactivityTimeout = TimeSpan.FromSeconds(30),
+                    LogSeverity = LogSeverity.Verbose
                 });
 
         private async Task TrackFinished(LavaPlayer player, LavaTrack track, TrackEndReason reason)

@@ -4,7 +4,6 @@ using Discord.Commands;
 using Newtonsoft.Json;
 using org.mariuszgromada.math.mxparser;
 using System;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -13,18 +12,18 @@ namespace DestDiscordBotV3.Service.External
     public class AllService : ModuleBase<CommandContextWithPrefix>
     {
         [Command("ping")]
-        public async Task PingAsync()
+        public async Task Ping()
         {
             var msg = await ReplyAsync("Pong!");
             await msg.ModifyAsync(m => m.Content = $"Pong! Time taken - **{(msg.Timestamp - DateTimeOffset.Now).Milliseconds}ms**");
         }
 
         [Command("math")]
-        public async Task MathAsync([Remainder] string expression) =>
+        public async Task Math([Remainder] string expression) =>
             await ReplyAsync(new Expression(expression).calculate().ToString());
 
         [Command("wiki")]
-        public async Task WikiAsync([Remainder] string text)
+        public async Task Wiki([Remainder] string text)
         {
             var search = string.Join("+", text.Split(" ".ToCharArray(),
                 StringSplitOptions.RemoveEmptyEntries));
@@ -32,7 +31,7 @@ namespace DestDiscordBotV3.Service.External
         }
 
         [Command("google")]
-        public async Task GoogleAsync([Remainder] string text)
+        public async Task Google([Remainder] string text)
         {
             var search = string.Join("+", text.Split(" ".ToCharArray(),
                 StringSplitOptions.RemoveEmptyEntries));
@@ -58,22 +57,6 @@ namespace DestDiscordBotV3.Service.External
             await ReplyAsync("", embed: embed.Build());
         }
 
-        [Command("choose")]
-        public async Task ChooseAsync([Remainder] string text)
-        {
-            var input = text.Split(new string[] { " | " }, StringSplitOptions.RemoveEmptyEntries);
-            await ReplyAsync($"**{Context.User.Username}**, i choose **{input[new Random().Next(input.Length)]}**!");
-        }
-
-        [Command("coin")]
-        public async Task Coin() =>
-            await ReplyAsync("Your coin landed on **" +
-                $"{new string[] { "HEADS", "TAILS" }[new Random().Next(2)]}**!");
-
-        [Command("dice")]
-        public async Task Dice(int num = -435786) =>
-            await ReplyAsync($"Your dice rolled **{new Random().Next(num)}**!");
-
         [Command("reverse")]
         public async Task Reverse([Remainder] string text)
         {
@@ -82,27 +65,8 @@ namespace DestDiscordBotV3.Service.External
             await ReplyAsync("**Reversed text:** " + new string(charArray));
         }
 
-        [Command("rps"), Alias("rockPaperScissors")]
-        public async Task RockPaperScissors(string cmd)
-        {
-            cmd = cmd.ToLower();
-            var chosen = new[] { "rock", "paper", "scissors" }[new Random().Next(3)];
-            if (cmd == chosen)
-            {
-                await ReplyAsync($"__destbot__ chose **{chosen.ToUpper()}**, it's a tie!");
-                return;
-            }
-            var arr = new[] { chosen, cmd };
-            if (arr.Contains("rock") && arr.Contains("paper"))
-                await ReplyAsync($"__destbot__ chose **{chosen.ToUpper()}**, **PAPER** wins!");
-            else if (arr.Contains("scissors") && arr.Contains("paper"))
-                await ReplyAsync($"__destbot__ chose **{chosen.ToUpper()}**, **SCISSORS** wins!");
-            else if (arr.Contains("rock") && arr.Contains("scissors"))
-                await ReplyAsync($"__destbot__ chose **{chosen.ToUpper()}**, **ROCK** wins!");
-        }
-
         [Command("time")]
-        public async Task HourAsync() =>
+        public async Task Time() =>
             await ReplyAsync($"The Utc time is: **{DateTime.UtcNow.TimeOfDay}**");
     }
 }

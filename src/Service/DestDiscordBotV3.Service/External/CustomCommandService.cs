@@ -1,4 +1,5 @@
 ﻿using DestDiscordBotV3.Data;
+using DestDiscordBotV3.Data.Extension;
 using DestDiscordBotV3.Model;
 using DestDiscordBotV3.Service.Interface;
 using Discord;
@@ -24,7 +25,7 @@ namespace DestDiscordBotV3.Service.External
         }
 
         [Command]
-        public async Task ListAsync()
+        public async Task List()
         {
             var guild = await _guild.GetById(Context.Guild.Id);
             if (!guild.CustomCommands.Any())
@@ -39,8 +40,19 @@ namespace DestDiscordBotV3.Service.External
         }
 
         [Command("create")]
-        public async Task CreateAsync(string command, [Remainder] string message)
+        public async Task Create(string command, [Remainder] string message)
         {
+            if (message.Length > 200)
+            {
+                await ReplyAsync("The length of the message can be up to 200 characters");
+                return;
+            }
+            var count = await _guild.GetAll().Where(w => w.CustomCommands != null && w.Id == Context.Guild.Id).CountDocumentsAsync();
+            if (count >= 20)
+            {
+                await ReplyAsync("You can only have up to 20 custom commands on a guild");
+                return;
+            }
             var guild = await _guild.GetById(Context.Guild.Id);
             if (guild.CustomCommands.FirstOrDefault(f => f.Command == command) != null)
             {
@@ -53,8 +65,13 @@ namespace DestDiscordBotV3.Service.External
         }
 
         [Command("edit")]
-        public async Task EditAsync(string command, [Remainder] string message)
+        public async Task Edit(string command, [Remainder] string message)
         {
+            if (message.Length > 200)
+            {
+                await ReplyAsync("The length of the message can be up to 200 characters");
+                return;
+            }
             var guild = await _guild.GetById(Context.Guild.Id);
             var customCommand = guild.CustomCommands.FirstOrDefault(f => f.Command == command);
             if (customCommand is null)
@@ -70,7 +87,7 @@ namespace DestDiscordBotV3.Service.External
         }
 
         [Command("remove")]
-        public async Task RemoveAsync(string command)
+        public async Task Remove(string command)
         {
             var guild = await _guild.GetById(Context.Guild.Id);
             var customCommand = guild.CustomCommands.FirstOrDefault(f => f.Command == command);

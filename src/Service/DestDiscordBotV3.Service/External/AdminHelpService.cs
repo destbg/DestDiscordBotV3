@@ -18,7 +18,7 @@ namespace DestDiscordBotV3.Service.External
         }
 
         [Command]
-        public async Task MainHelp()
+        public async Task Main()
         {
             var builder = new StringBuilder("```fix\n'Admin Commands List'```" +
                 $"\nUse `{Context.Prefix}admin <command>` to see more info on a command, for example `{Context.Prefix}help scoreboard`" +
@@ -34,10 +34,10 @@ namespace DestDiscordBotV3.Service.External
         }
 
         [Command]
-        public async Task DisplayHelp(string command)
+        public async Task Display(string command)
         {
             var help = await _help.GetById(command.ToLower());
-            if (help == null)
+            if (help is null)
             {
                 await ReplyAsync("That command doesn't exist");
                 return;

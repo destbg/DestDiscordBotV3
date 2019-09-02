@@ -19,14 +19,14 @@ namespace DestDiscordBotV3.Service.External
         }
 
         [Command("default")]
-        public async Task DefaultAsync()
+        public async Task Default()
         {
             await ChangePrefix("dest!");
             await ReplyAsync("```css\nPrefix was changed to [dest!]```");
         }
 
         [Command("change")]
-        public async Task ChangeAsync(string prefix)
+        public async Task Change(string prefix)
         {
             await ChangePrefix(prefix);
             await ReplyAsync($"```css\nPrefix was changed to [{prefix}]```");
