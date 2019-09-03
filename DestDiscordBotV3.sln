@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DestDiscordBotV3.Model", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DestDiscordBotV3.Service", "src\Service\DestDiscordBotV3.Service\DestDiscordBotV3.Service.csproj", "{EC0EB927-6D1F-4C94-BC96-C9AB326B019B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DestDiscordBotV3.Common", "src\Service\DestDiscordBotV3.Common\DestDiscordBotV3.Common.csproj", "{6FB07678-F87A-4020-91B1-1FC1314ED60A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DestDiscordBotV3.Common", "src\Service\DestDiscordBotV3.Common\DestDiscordBotV3.Common.csproj", "{6FB07678-F87A-4020-91B1-1FC1314ED60A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DestDiscordBotV3.AppReport", "src\Program\DestDiscordBotV3.AppReport\DestDiscordBotV3.AppReport.csproj", "{C40B8C40-ED3C-4E5C-AFD7-AED4488EEFEE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{6FB07678-F87A-4020-91B1-1FC1314ED60A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FB07678-F87A-4020-91B1-1FC1314ED60A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FB07678-F87A-4020-91B1-1FC1314ED60A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C40B8C40-ED3C-4E5C-AFD7-AED4488EEFEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C40B8C40-ED3C-4E5C-AFD7-AED4488EEFEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C40B8C40-ED3C-4E5C-AFD7-AED4488EEFEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C40B8C40-ED3C-4E5C-AFD7-AED4488EEFEE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +61,7 @@ Global
 		{1C796195-B87C-424A-ADF5-0B6492D24C0F} = {C383763C-F45D-4A65-9156-78DA5693A05B}
 		{EC0EB927-6D1F-4C94-BC96-C9AB326B019B} = {92D7C693-3A09-47BF-B079-5E5AFD88D27B}
 		{6FB07678-F87A-4020-91B1-1FC1314ED60A} = {92D7C693-3A09-47BF-B079-5E5AFD88D27B}
+		{C40B8C40-ED3C-4E5C-AFD7-AED4488EEFEE} = {7F269EC7-798E-4617-802A-FE9F794AD775}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {90D102F4-705F-4282-9482-E0FA4D15EA08}

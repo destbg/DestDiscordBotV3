@@ -18,10 +18,6 @@ namespace DestDiscordBotV3
             if (!File.Exists("BotToken.txt"))
                 throw new IOException("File BotToken.txt not found");
 
-            // Check Log
-            if (!Directory.Exists("Log"))
-                Directory.CreateDirectory("Log");
-
             // Check Resources
             var appResource = dInjection.Resolve<IRepository<AppResource>>();
             await DoResourcesFileCheck(appResource, "Resources/8ballAnswers.txt", ResourceType.EightBall, 0);

@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Reports</title>
+
+    <link href="bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <div class="list-group" data-bind="foreach: reports">
+            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start" data-bind="click: $parent.removeReport">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1" data-bind="text: guild"></h5>
+                    <small data-bind="text: id"></small>
+                </div>
+                <p class="mb-1" data-bind="text: message"></p>
+                <small data-bind="text: user"></small>
+            </a>
+        </div>
+        <button data-bind="click: refreshReports" class="btn btn-primary">Refresh</button>
+    </div>
+    <script src="signalr.min.js"></script>
+    <script src="knockout-3.5.0.js"></script>
+    <script src="site.js"></script>
+</body>
+</html>
