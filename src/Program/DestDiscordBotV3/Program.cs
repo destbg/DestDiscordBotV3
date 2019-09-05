@@ -6,6 +6,7 @@
     {
         private static async Task Main()
         {
+            await StartUp.DoFolderChecks();
             var dInjection = new DInjection();
             await StartUp.DoChecks(dInjection);
             var connection = dInjection.Resolve<IConnection>();

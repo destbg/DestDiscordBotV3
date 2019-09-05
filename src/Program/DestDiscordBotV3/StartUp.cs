@@ -18,15 +18,24 @@
         public static string GetToken() =>
             File.ReadAllText("BotToken.txt");
 
-        /// <summary>
-        /// Do start up checks
-        /// </summary>
-        public static async Task DoChecks(IDInjection dInjection)
+        public static Task DoFolderChecks()
         {
             // Check Bot Token
             if (!File.Exists("BotToken.txt"))
                 throw new IOException("File BotToken.txt not found");
 
+            // Check Log
+            if (!Directory.Exists("Log"))
+                Directory.CreateDirectory("Log");
+
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// Do start up checks
+        /// </summary>
+        public static async Task DoChecks(IDInjection dInjection)
+        {
             // Check Resources
             var appResource = dInjection.Resolve<IRepository<AppResource>>();
             await DoResourcesFileCheck(appResource, "Resources/8ballAnswers.txt", ResourceType.EightBall, 0);

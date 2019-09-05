@@ -40,10 +40,6 @@
                     CaseSensitiveCommands = false
                 });
 
-            // Check Log
-            if (!Directory.Exists("Log"))
-                Directory.CreateDirectory("Log");
-
             var writer = new StreamWriter($"Log/{DateTime.UtcNow.ToString().Replace(':', '.')}.txt")
             {
                 AutoFlush = true
