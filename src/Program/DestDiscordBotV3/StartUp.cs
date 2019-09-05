@@ -18,6 +18,9 @@
         public static string GetToken() =>
             File.ReadAllText("BotToken.txt");
 
+        /// <summary>
+        /// Dp Folder Checks
+        /// </summary>
         public static Task DoFolderChecks()
         {
             // Check Bot Token
