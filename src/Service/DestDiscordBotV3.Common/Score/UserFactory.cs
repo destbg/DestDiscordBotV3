@@ -1,8 +1,8 @@
-﻿using DestDiscordBotV3.Model;
-using System;
-
-namespace DestDiscordBotV3.Common.Score
+﻿namespace DestDiscordBotV3.Common.Score
 {
+    using Model;
+    using System;
+
     public class UserFactory : IUserFactory
     {
         public AppUser Create(ulong userId) =>

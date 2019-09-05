@@ -1,8 +1,8 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-using System;
-
-namespace DestDiscordBotV3.Model
+﻿namespace DestDiscordBotV3.Model
 {
+    using MongoDB.Bson.Serialization.Attributes;
+    using System;
+
     public class AppUser
     {
         public ulong Id { get; set; }

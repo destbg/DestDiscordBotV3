@@ -1,12 +1,12 @@
-﻿using MongoDB.Bson;
-using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-
-namespace DestDiscordBotV3.Data
+﻿namespace DestDiscordBotV3.Data
 {
+    using MongoDB.Bson;
+    using MongoDB.Driver;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq.Expressions;
+    using System.Threading.Tasks;
+
     public class Repository<T> : IRepository<T>
     {
         private readonly IMongoDatabase _database;
@@ -28,34 +28,33 @@ namespace DestDiscordBotV3.Data
         {
             var list = _database.GetCollection<T>(_name);
             var filter = Builders<T>.Filter.Eq("_id", id);
-
             return list.Find(filter).FirstAsync();
         }
 
-        public Task<T> GetByExpression(Expression<Func<T, bool>> expression)
+        public Task<T> GetByCondition(Expression<Func<T, bool>> conditions)
         {
             var list = _database.GetCollection<T>(_name);
-            return list.Find(expression).FirstAsync();
+            return list.Find(conditions).FirstAsync();
         }
 
-        public Task<List<T>> GetAllByExpression(Expression<Func<T, bool>> expression)
+        public Task<List<T>> GetAllByCondition(Expression<Func<T, bool>> conditions)
         {
             var list = _database.GetCollection<T>(_name);
-            return list.Find(expression).ToListAsync();
+            return list.Find(conditions).ToListAsync();
         }
 
-        public async Task Create(T obj)
+        public async Task Create(T item)
         {
             var list = _database.GetCollection<T>(_name);
-            await list.InsertOneAsync(obj);
+            await list.InsertOneAsync(item);
         }
 
-        public async Task Update<TId>(T obj, TId id)
+        public async Task Update<TId>(T item, TId id)
         {
             var list = _database.GetCollection<T>(_name);
             await list.ReplaceOneAsync(
                 Builders<T>.Filter.Eq("_id", id),
-                obj,
+                item,
                 new UpdateOptions { IsUpsert = true });
         }
 
@@ -63,20 +62,19 @@ namespace DestDiscordBotV3.Data
         {
             var list = _database.GetCollection<T>(_name);
             var filter = Builders<T>.Filter.Eq("_id", id);
-
             await list.DeleteOneAsync(filter);
         }
 
-        public async Task Delete(Expression<Func<T, bool>> expression)
+        public async Task Delete(Expression<Func<T, bool>> conditions)
         {
             var list = _database.GetCollection<T>(_name);
-            await list.DeleteOneAsync(expression);
+            await list.DeleteOneAsync(conditions);
         }
 
-        public async Task DeleteMany(Expression<Func<T, bool>> expression)
+        public async Task DeleteMany(Expression<Func<T, bool>> conditions)
         {
             var list = _database.GetCollection<T>(_name);
-            await list.DeleteManyAsync(expression);
+            await list.DeleteManyAsync(conditions);
         }
     }
 }

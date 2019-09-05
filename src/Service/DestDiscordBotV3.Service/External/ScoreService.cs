@@ -1,15 +1,15 @@
-﻿using DestDiscordBotV3.Data;
-using DestDiscordBotV3.Data.Extension;
-using DestDiscordBotV3.Model;
-using Discord;
-using Discord.Commands;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DestDiscordBotV3.Service.External
+﻿namespace DestDiscordBotV3.Service.External
 {
+    using Data;
+    using Data.Extension;
+    using Discord;
+    using Discord.Commands;
+    using Model;
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using System.Threading.Tasks;
+
     [Group("scoreboard"), Alias("sB", "top")]
     public class ScoreService : ModuleBase<CommandContextWithPrefix>
     {
@@ -93,7 +93,7 @@ namespace DestDiscordBotV3.Service.External
                 await ReplyAsync("Bots aren't in the scoreboard");
                 return;
             }
-            var guildUser = await _user.GetByExpression(f => f.UserId == user.Id && f.GuildId == Context.Guild.Id);
+            var guildUser = await _user.GetByCondition(f => f.UserId == user.Id && f.GuildId == Context.Guild.Id);
             guildUser.Points += points;
             await _user.Update(guildUser, guildUser.Id);
             await ReplyAsync($"```css\n[{user.Username}] was given {(points == 1 ? "a point" : $"[{points}] pooints")}```");
@@ -108,7 +108,7 @@ namespace DestDiscordBotV3.Service.External
                 await ReplyAsync("Bots aren't in the scoreboard");
                 return;
             }
-            var guildUser = await _user.GetByExpression(f => f.UserId == user.Id && f.GuildId == Context.Guild.Id);
+            var guildUser = await _user.GetByCondition(f => f.UserId == user.Id && f.GuildId == Context.Guild.Id);
             guildUser.Points -= points;
             await _user.Update(guildUser, guildUser.Id);
             await ReplyAsync($"```css\n[{user.Username}] had {(points == 1 ? "a point" : $"[{points}] pooints")} taken```");

@@ -1,11 +1,11 @@
-﻿using DestDiscordBotV3.Common.Logging;
-using DestDiscordBotV3.Common.Redstone;
-using Discord.WebSocket;
-using System;
-using System.Threading.Tasks;
-
-namespace DestDiscordBotV3
+﻿namespace DestDiscordBotV3
 {
+    using Common.Logging;
+    using Common.Redstone;
+    using Discord.WebSocket;
+    using System;
+    using System.Threading.Tasks;
+
     public class Connection : IConnection
     {
         private readonly DiscordSocketClient _client;
@@ -27,7 +27,8 @@ namespace DestDiscordBotV3
             await _client.LoginAsync(Discord.TokenType.Bot, token);
             await _client.StartAsync();
             await _client.SetGameAsync("Try dest!help");
-            await _handler.Initialize();
+            await _repeater.InitializeAsync();
+            await _handler.InitializeAsync();
             await Task.Delay(-1);
         }
     }

@@ -1,11 +1,11 @@
-﻿using DestDiscordBotV3.Model;
-using DestDiscordBotV3.Service.Extension;
-using Discord;
-using Discord.Commands;
-using System.Threading.Tasks;
-
-namespace DestDiscordBotV3.Service.External
+﻿namespace DestDiscordBotV3.Service.External
 {
+    using Common.Function;
+    using Discord;
+    using Discord.Commands;
+    using Model;
+    using System.Threading.Tasks;
+
     public class GuildService : ModuleBase<CommandContextWithPrefix>
     {
         [Command("prune"), Alias("delete", "purge")]

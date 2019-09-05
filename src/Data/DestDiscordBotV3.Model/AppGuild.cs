@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace DestDiscordBotV3.Model
+﻿namespace DestDiscordBotV3.Model
 {
+    using System.Collections.Generic;
+
     public class AppGuild
     {
         public AppGuild()

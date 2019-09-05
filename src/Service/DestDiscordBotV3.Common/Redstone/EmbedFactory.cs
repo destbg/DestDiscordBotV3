@@ -1,8 +1,8 @@
-﻿using Discord;
-using System;
-
-namespace DestDiscordBotV3.Common.Redstone
+﻿namespace DestDiscordBotV3.Common.Redstone
 {
+    using Discord;
+    using System;
+
     public class EmbedFactory : IEmbedFactory
     {
         public Embed Create(string title, Color color, string description, string footer, DateTimeOffset endTime) =>

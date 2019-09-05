@@ -1,13 +1,13 @@
-﻿using DestDiscordBotV3.Data;
-using DestDiscordBotV3.Data.Extension;
-using DestDiscordBotV3.Model;
-using Discord;
-using Discord.WebSocket;
-using System;
-using System.Threading.Tasks;
-
-namespace DestDiscordBotV3.Common.Redstone
+﻿namespace DestDiscordBotV3.Common.Redstone
 {
+    using Data;
+    using Data.Extension;
+    using Discord;
+    using Discord.WebSocket;
+    using Model;
+    using System;
+    using System.Threading.Tasks;
+
     public class ReminderObserver : IReminderObserver
     {
         private readonly IRepository<Reminder> _reminder;

@@ -1,11 +1,11 @@
-﻿using DestDiscordBotV3.Model;
-using Discord.Commands;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace DestDiscordBotV3.Service.External
+﻿namespace DestDiscordBotV3.Service.External
 {
+    using Discord.Commands;
+    using Model;
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
+
     public class RandomService : ModuleBase<CommandContextWithPrefix>
     {
         private readonly Random _random;

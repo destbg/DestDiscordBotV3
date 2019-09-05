@@ -1,7 +1,7 @@
-﻿using System.Threading.Tasks;
-
-namespace DestDiscordBotV3
+﻿namespace DestDiscordBotV3
 {
+    using System.Threading.Tasks;
+
     internal class Program
     {
         private static async Task Main()

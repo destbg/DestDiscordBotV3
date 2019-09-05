@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace DestDiscordBotV3.Model
+﻿namespace DestDiscordBotV3.Model
 {
+    using System;
+
     public class Todo
     {
         public Guid Id { get; set; }

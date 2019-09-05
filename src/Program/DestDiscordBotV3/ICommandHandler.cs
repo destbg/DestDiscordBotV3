@@ -1,9 +1,15 @@
-﻿using System.Threading.Tasks;
-
-namespace DestDiscordBotV3
+﻿namespace DestDiscordBotV3
 {
+    using System.Threading.Tasks;
+
+    /// <summary>
+    /// Defines the <see cref="ICommandHandler" />
+    /// </summary>
     public interface ICommandHandler
     {
-        Task Initialize();
+        /// <summary>
+        /// Initialize the <see cref="CommandHandler" />
+        /// </summary>
+        Task InitializeAsync();
     }
 }

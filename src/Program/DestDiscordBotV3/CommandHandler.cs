@@ -1,18 +1,18 @@
-﻿using DestDiscordBotV3.Common.Guild;
-using DestDiscordBotV3.Common.Logging;
-using DestDiscordBotV3.Common.Score;
-using DestDiscordBotV3.Model;
-using DestDiscordBotV3.Service.External;
-using DestDiscordBotV3.Service.Interface;
-using Discord.Commands;
-using Discord.WebSocket;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace DestDiscordBotV3
+﻿namespace DestDiscordBotV3
 {
+    using Common.Guild;
+    using Common.Logging;
+    using Common.Score;
+    using DestDiscordBotV3.Common.Music;
+    using Discord.Commands;
+    using Discord.WebSocket;
+    using Microsoft.Extensions.DependencyInjection;
+    using Model;
+    using Service.External;
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
+
     public class CommandHandler : ICommandHandler
     {
         private readonly DiscordSocketClient _client;
@@ -33,7 +33,7 @@ namespace DestDiscordBotV3
             _service.AddModulesAsync(typeof(HelpService).Assembly, provider);
         }
 
-        public async Task Initialize()
+        public async Task InitializeAsync()
         {
             _service.Log += _logger.Log;
             _client.MessageReceived += HandleCommandAsync;
@@ -73,19 +73,23 @@ namespace DestDiscordBotV3
                 case CommandError.UnmetPrecondition:
                     await context.Channel.SendMessageAsync("You don't have the required permissions to use this command");
                     return;
+
                 case CommandError.UnknownCommand:
                     if (await HandleCustomCommandAsync(context, guild))
                         return;
                     await context.Channel.SendMessageAsync($"Unknown command, for list of commands try using {context.Prefix}help");
                     return;
+
                 case CommandError.ParseFailed:
                 case CommandError.BadArgCount:
                     await context.Channel.SendMessageAsync($"Command wasn't used properly, try using {context.Prefix}help {GetCommandFromMessage(context.Message.Content, context.Prefix)}");
                     return;
+
                 case CommandError.Unsuccessful:
                 case CommandError.Exception:
                     await context.Channel.SendMessageAsync($"Command threw an exception, try reporting it using {context.Prefix}report <message>");
                     return;
+
                 default:
                     await context.Channel.SendMessageAsync(result.ErrorReason);
                     return;

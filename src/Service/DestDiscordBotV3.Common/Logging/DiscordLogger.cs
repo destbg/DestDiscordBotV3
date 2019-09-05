@@ -1,8 +1,8 @@
-﻿using Discord;
-using System.Threading.Tasks;
-
-namespace DestDiscordBotV3.Common.Logging
+﻿namespace DestDiscordBotV3.Common.Logging
 {
+    using Discord;
+    using System.Threading.Tasks;
+
     public class DiscordLogger : IDiscordLogger
     {
         private readonly ILogger _logger;

@@ -1,14 +1,14 @@
-﻿using DestDiscordBotV3.Data;
-using DestDiscordBotV3.Data.Extension;
-using DestDiscordBotV3.Model;
-using DestDiscordBotV3.Service.Interface;
-using Discord.Commands;
-using System;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DestDiscordBotV3.Service.External
+﻿namespace DestDiscordBotV3.Service.External
 {
+    using Data;
+    using Data.Extension;
+    using Discord.Commands;
+    using Model;
+    using Service.Interface;
+    using System;
+    using System.Text;
+    using System.Threading.Tasks;
+
     [Group("todo")]
     public class TodoService : ModuleBase<CommandContextWithPrefix>
     {
@@ -24,7 +24,7 @@ namespace DestDiscordBotV3.Service.External
         [Command]
         public async Task List()
         {
-            var list = await _todo.GetAllByExpression(f => f.UserId == Context.User.Id);
+            var list = await _todo.GetAllByCondition(f => f.UserId == Context.User.Id);
             if (list.Count == 0)
             {
                 await ReplyAsync("Your to-do list is empty");
@@ -46,7 +46,7 @@ namespace DestDiscordBotV3.Service.External
         [Command("remove")]
         public async Task Remove(int pos)
         {
-            var list = await _todo.GetAllByExpression(f => f.UserId == Context.User.Id);
+            var list = await _todo.GetAllByCondition(f => f.UserId == Context.User.Id);
             if (pos < 1 || pos > list.Count)
             {
                 await ReplyAsync("There is no to-do at that number");

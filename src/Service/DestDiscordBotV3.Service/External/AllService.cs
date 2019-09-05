@@ -1,14 +1,13 @@
-﻿using DestDiscordBotV3.Model;
-using Discord;
-using Discord.Commands;
-using Newtonsoft.Json;
-using org.mariuszgromada.math.mxparser;
-using System;
-using System.Net;
-using System.Threading.Tasks;
-
-namespace DestDiscordBotV3.Service.External
+﻿namespace DestDiscordBotV3.Service.External
 {
+    using Discord;
+    using Discord.Commands;
+    using Model;
+    using Newtonsoft.Json;
+    using System;
+    using System.Net;
+    using System.Threading.Tasks;
+
     public class AllService : ModuleBase<CommandContextWithPrefix>
     {
         [Command("ping")]
@@ -17,10 +16,6 @@ namespace DestDiscordBotV3.Service.External
             var msg = await ReplyAsync("Pong!");
             await msg.ModifyAsync(m => m.Content = $"Pong! Time taken - **{(msg.Timestamp - DateTimeOffset.Now).Milliseconds}ms**");
         }
-
-        [Command("math")]
-        public async Task Math([Remainder] string expression) =>
-            await ReplyAsync(new Expression(expression).calculate().ToString());
 
         [Command("wiki")]
         public async Task Wiki([Remainder] string text)

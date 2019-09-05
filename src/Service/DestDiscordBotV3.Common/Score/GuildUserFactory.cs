@@ -1,8 +1,8 @@
-﻿using DestDiscordBotV3.Model;
-using System;
-
-namespace DestDiscordBotV3.Common.Score
+﻿namespace DestDiscordBotV3.Common.Score
 {
+    using Model;
+    using System;
+
     public class GuildUserFactory : IGuildUserFactory
     {
         public GuildUser Create(ulong userId, ulong guildId, ulong points) =>

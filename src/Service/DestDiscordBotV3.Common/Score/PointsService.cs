@@ -1,10 +1,10 @@
-﻿using DestDiscordBotV3.Data;
-using DestDiscordBotV3.Model;
-using System;
-using System.Threading.Tasks;
-
-namespace DestDiscordBotV3.Common.Score
+﻿namespace DestDiscordBotV3.Common.Score
 {
+    using Data;
+    using Model;
+    using System;
+    using System.Threading.Tasks;
+
     public class PointsService : IPointsService
     {
         private readonly IRepository<AppUser> _user;
@@ -54,7 +54,7 @@ namespace DestDiscordBotV3.Common.Score
             GuildUser guildUser;
             try
             {
-                guildUser = await _guildUser.GetByExpression(f => f.UserId == userId && f.GuildId == guildId);
+                guildUser = await _guildUser.GetByCondition(f => f.UserId == userId && f.GuildId == guildId);
             }
             catch
             {

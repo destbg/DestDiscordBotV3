@@ -1,17 +1,16 @@
-﻿using DestDiscordBotV3.Common.Logging;
-using DestDiscordBotV3.Model;
-using DestDiscordBotV3.Service.Interface;
-using Discord;
-using Discord.WebSocket;
-using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Victoria;
-using Victoria.Entities;
-
-namespace DestDiscordBotV3.Service.Extension
+﻿namespace DestDiscordBotV3.Common.Music
 {
+    using Common.Logging;
+    using Discord;
+    using Discord.WebSocket;
+    using Model;
+    using System;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Victoria;
+    using Victoria.Entities;
+
     public class MusicHandler : IMusicHandler
     {
         private readonly LavaRestClient _lavaRestClient;

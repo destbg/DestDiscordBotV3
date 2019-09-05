@@ -1,9 +1,9 @@
-﻿using DestDiscordBotV3.Model;
-using DestDiscordBotV3.Service.Interface;
-using System;
-
-namespace DestDiscordBotV3.Service.Internal
+﻿namespace DestDiscordBotV3.Service.Internal
 {
+    using Model;
+    using Service.Interface;
+    using System;
+
     public class TagFactory : ITagFactory
     {
         public Tag Create(ulong userId, string tag, string message) =>

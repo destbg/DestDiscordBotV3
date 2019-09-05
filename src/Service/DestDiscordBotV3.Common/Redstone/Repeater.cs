@@ -1,8 +1,9 @@
-﻿using System;
-using System.Timers;
-
-namespace DestDiscordBotV3.Common.Redstone
+﻿namespace DestDiscordBotV3.Common.Redstone
 {
+    using System;
+    using System.Threading.Tasks;
+    using System.Timers;
+
     public class Repeater : IRepeater
     {
         private readonly IGiveawayObserver _giveaway;
@@ -22,14 +23,19 @@ namespace DestDiscordBotV3.Common.Redstone
                 AutoReset = true,
                 Interval = 10000
             };
-            _tenSeconds.Elapsed += TenSeoncdsPassed;
             _minute = new Timer
             {
                 Enabled = true,
                 AutoReset = true,
                 Interval = 60000
             };
+        }
+
+        public Task InitializeAsync()
+        {
+            _tenSeconds.Elapsed += TenSeoncdsPassed;
             _minute.Elapsed += MinutePassed;
+            return Task.CompletedTask;
         }
 
         private void TenSeoncdsPassed(object sender, ElapsedEventArgs e) =>

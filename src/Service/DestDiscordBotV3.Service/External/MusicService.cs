@@ -1,14 +1,15 @@
-﻿using DestDiscordBotV3.Data;
-using DestDiscordBotV3.Model;
-using DestDiscordBotV3.Service.Interface;
-using Discord;
-using Discord.Commands;
-using Discord.WebSocket;
-using System;
-using System.Threading.Tasks;
-
-namespace DestDiscordBotV3.Service.External
+﻿namespace DestDiscordBotV3.Service.External
 {
+    using Common.Music;
+    using Data;
+    using Discord;
+    using Discord.Commands;
+    using Discord.WebSocket;
+    using Model;
+    using Service.Interface;
+    using System;
+    using System.Threading.Tasks;
+
     public class MusicService : ModuleBase<CommandContextWithPrefix>
     {
         private readonly IMusicHandler _musicHandler;
@@ -70,7 +71,7 @@ namespace DestDiscordBotV3.Service.External
                 await ReplyAsync("You can only choose between 1 to 5");
                 return;
             }
-            var music = await _music.GetByExpression(f => f.GuildId == Context.Guild.Id);
+            var music = await _music.GetByCondition(f => f.GuildId == Context.Guild.Id);
             await _music.Delete(music.Id);
             var (_, message) = await _musicHandler.PlayAsync(user.VoiceChannel, Context.Channel as ITextChannel, music.Query, Context.Guild.Id, Context.Prefix, track - 1);
             await ReplyAsync(message);

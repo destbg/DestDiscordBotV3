@@ -1,15 +1,15 @@
-﻿using DestDiscordBotV3.Data;
-using DestDiscordBotV3.Data.Extension;
-using DestDiscordBotV3.Model;
-using DestDiscordBotV3.Service.Interface;
-using Discord;
-using Discord.Commands;
-using System;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DestDiscordBotV3.Service.External
+﻿namespace DestDiscordBotV3.Service.External
 {
+    using Data;
+    using Data.Extension;
+    using Discord;
+    using Discord.Commands;
+    using Model;
+    using Service.Interface;
+    using System;
+    using System.Text;
+    using System.Threading.Tasks;
+
     [Group("tag")]
     public class TagService : ModuleBase<CommandContextWithPrefix>
     {
@@ -25,7 +25,7 @@ namespace DestDiscordBotV3.Service.External
         [Command, Priority(0)]
         public async Task Default(string tag)
         {
-            var msg = await _tag.GetByExpression(f => f.UserId == Context.User.Id && f.Name == tag);
+            var msg = await _tag.GetByCondition(f => f.UserId == Context.User.Id && f.Name == tag);
             if (msg is null)
                 return;
             await ReplyAsync(msg.Msg);
@@ -52,7 +52,7 @@ namespace DestDiscordBotV3.Service.External
         [Command("change"), Priority(1)]
         public async Task Change(string tag, [Remainder] string msg)
         {
-            var result = await _tag.GetByExpression(f => f.UserId == Context.User.Id && f.Name == tag);
+            var result = await _tag.GetByCondition(f => f.UserId == Context.User.Id && f.Name == tag);
             if (result is null)
             {
                 await ReplyAsync($"You don't have a tag **{tag}**");
@@ -66,7 +66,7 @@ namespace DestDiscordBotV3.Service.External
         [Command("remove"), Priority(1)]
         public async Task Remove(string tag)
         {
-            var result = await _tag.GetByExpression(f => f.UserId == Context.User.Id && f.Name == tag);
+            var result = await _tag.GetByCondition(f => f.UserId == Context.User.Id && f.Name == tag);
             if (result is null)
             {
                 await ReplyAsync($"You don't have a tag **{tag}**");
@@ -80,7 +80,7 @@ namespace DestDiscordBotV3.Service.External
         public async Task List(IUser user = null)
         {
             var target = user ?? Context.User;
-            var list = await _tag.GetAllByExpression(f => f.UserId == target.Id);
+            var list = await _tag.GetAllByCondition(f => f.UserId == target.Id);
             if (list.Count == 0)
             {
                 await ReplyAsync($"**{target.Username}** doesn't have any tags");

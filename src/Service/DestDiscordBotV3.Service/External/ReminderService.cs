@@ -1,12 +1,12 @@
-﻿using DestDiscordBotV3.Data;
-using DestDiscordBotV3.Model;
-using DestDiscordBotV3.Service.Interface;
-using Discord.Commands;
-using System;
-using System.Threading.Tasks;
-
-namespace DestDiscordBotV3.Service.External
+﻿namespace DestDiscordBotV3.Service.External
 {
+    using Data;
+    using Discord.Commands;
+    using Model;
+    using Service.Interface;
+    using System;
+    using System.Threading.Tasks;
+
     [Group("reminder"), Alias("remindme")]
     public class ReminderService : ModuleBase<CommandContextWithPrefix>
     {

@@ -1,18 +1,27 @@
-﻿using DestDiscordBotV3.Data;
-using DestDiscordBotV3.Model;
-using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-
-namespace DestDiscordBotV3
+﻿namespace DestDiscordBotV3
 {
+    using Data;
+    using Model;
+    using Newtonsoft.Json;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Threading.Tasks;
+
+    /// <summary>
+    /// <see cref="StartUp" /> class
+    /// </summary>
     public static class StartUp
     {
+        /// <summary>
+        /// Get the bot token from the BotToken.txt file
+        /// </summary>
         public static string GetToken() =>
             File.ReadAllText("BotToken.txt");
 
-        public static async Task DoChecks(DInjection dInjection)
+        /// <summary>
+        /// Do start up checks
+        /// </summary>
+        public static async Task DoChecks(IDInjection dInjection)
         {
             // Check Bot Token
             if (!File.Exists("BotToken.txt"))
@@ -46,7 +55,7 @@ namespace DestDiscordBotV3
                 AppResource result;
                 try
                 {
-                    result = await repository.GetByExpression(f => f.Msg == list[i]);
+                    result = await repository.GetByCondition(f => f.Msg == list[i]);
                 }
                 catch
                 {

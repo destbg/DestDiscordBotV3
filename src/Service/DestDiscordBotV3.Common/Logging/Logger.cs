@@ -1,8 +1,8 @@
-﻿using System.IO;
-using System;
-
-namespace DestDiscordBotV3.Common.Logging
+﻿namespace DestDiscordBotV3.Common.Logging
 {
+    using System;
+    using System.IO;
+
     public class Logger : ILogger
     {
         private readonly StreamWriter _writer;

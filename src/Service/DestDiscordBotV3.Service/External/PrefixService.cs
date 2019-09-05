@@ -1,12 +1,12 @@
-﻿using DestDiscordBotV3.Data;
-using DestDiscordBotV3.Model;
-using Discord;
-using Discord.Commands;
-using System;
-using System.Threading.Tasks;
-
-namespace DestDiscordBotV3.Service.External
+﻿namespace DestDiscordBotV3.Service.External
 {
+    using Data;
+    using Discord;
+    using Discord.Commands;
+    using Model;
+    using System;
+    using System.Threading.Tasks;
+
     [Group("prefix"), Alias("changePrefix", "newPrefix", "pref")]
     [RequireUserPermission(GuildPermission.Administrator)]
     public class PrefixService : ModuleBase<CommandContextWithPrefix>

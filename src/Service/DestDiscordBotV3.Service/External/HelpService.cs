@@ -1,13 +1,13 @@
-﻿using DestDiscordBotV3.Data;
-using DestDiscordBotV3.Model;
-using Discord.Commands;
-using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DestDiscordBotV3.Service.External
+﻿namespace DestDiscordBotV3.Service.External
 {
+    using Data;
+    using Discord.Commands;
+    using Model;
+    using System;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
     [Group("help")]
     public class HelpService : ModuleBase<CommandContextWithPrefix>
     {

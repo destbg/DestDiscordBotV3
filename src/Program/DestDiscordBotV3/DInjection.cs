@@ -1,24 +1,24 @@
-﻿using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using DestDiscordBotV3.Common.Guild;
-using DestDiscordBotV3.Common.Logging;
-using DestDiscordBotV3.Common.Redstone;
-using DestDiscordBotV3.Common.Score;
-using DestDiscordBotV3.Data;
-using DestDiscordBotV3.Service.Extension;
-using DestDiscordBotV3.Service.Interface;
-using DestDiscordBotV3.Service.Internal;
-using Discord;
-using Discord.Commands;
-using Discord.WebSocket;
-using MongoDB.Driver;
-using System;
-using System.IO;
-using Victoria;
-
-namespace DestDiscordBotV3
+﻿namespace DestDiscordBotV3
 {
-    public class DInjection
+    using Autofac;
+    using Autofac.Extensions.DependencyInjection;
+    using Common.Guild;
+    using Common.Logging;
+    using Common.Redstone;
+    using Common.Score;
+    using Data;
+    using DestDiscordBotV3.Common.Math;
+    using DestDiscordBotV3.Common.Music;
+    using Discord;
+    using Discord.Commands;
+    using Discord.WebSocket;
+    using MongoDB.Driver;
+    using Service.Internal;
+    using System;
+    using System.IO;
+    using Victoria;
+
+    public class DInjection : IDInjection
     {
         private readonly IContainer _container;
 
@@ -94,8 +94,8 @@ namespace DestDiscordBotV3
             builder.RegisterType<DiscordLogger>().As<IDiscordLogger>();
             builder.RegisterType<LavaRestClient>();
             builder.RegisterType<LavaSocketClient>().SingleInstance();
-            builder.RegisterType<MusicHandler>()
-                .As<IMusicHandler>();
+            builder.RegisterType<MusicHandler>().As<IMusicHandler>();
+            builder.RegisterType<MathHandler>().As<IMathHandler>();
 
             builder.RegisterType<Random>();
             builder.RegisterInstance(db).SingleInstance();

@@ -1,15 +1,15 @@
-﻿using DestDiscordBotV3.Data;
-using DestDiscordBotV3.Data.Extension;
-using DestDiscordBotV3.Model;
-using DestDiscordBotV3.Service.Interface;
-using Discord;
-using Discord.Commands;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace DestDiscordBotV3.Service.External
+﻿namespace DestDiscordBotV3.Service.External
 {
+    using Data;
+    using Data.Extension;
+    using Discord;
+    using Discord.Commands;
+    using Model;
+    using Service.Interface;
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
+
     [Group("giveaway")]
     [RequireUserPermission(GuildPermission.ManageGuild)]
     public class GiveawayService : ModuleBase<CommandContextWithPrefix>
@@ -64,7 +64,7 @@ namespace DestDiscordBotV3.Service.External
                 await ReplyAsync("The length of the prize can be up to 50 characters");
                 return;
             }
-            var giveaway = await _giveaway.GetByExpression(f => f.MessageId == messageId);
+            var giveaway = await _giveaway.GetByCondition(f => f.MessageId == messageId);
             if (giveaway is null)
             {
                 await ReplyAsync("Giveaway with that message id doesn't exist");
@@ -107,7 +107,7 @@ namespace DestDiscordBotV3.Service.External
         [Command("end")]
         public async Task End(ulong messageId)
         {
-            var giveaway = await _giveaway.GetByExpression(f => f.MessageId == messageId);
+            var giveaway = await _giveaway.GetByCondition(f => f.MessageId == messageId);
             if (giveaway == null)
             {
                 await ReplyAsync("Giveaway with that message id doesn't exist");

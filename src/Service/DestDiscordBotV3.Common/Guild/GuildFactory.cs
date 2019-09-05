@@ -1,7 +1,7 @@
-﻿using DestDiscordBotV3.Model;
-
-namespace DestDiscordBotV3.Common.Guild
+﻿namespace DestDiscordBotV3.Common.Guild
 {
+    using Model;
+
     public class GuildFactory : IGuildFactory
     {
         public AppGuild Create(ulong id) =>

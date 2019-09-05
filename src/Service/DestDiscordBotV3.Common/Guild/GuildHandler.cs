@@ -1,10 +1,10 @@
-﻿using DestDiscordBotV3.Data;
-using DestDiscordBotV3.Model;
-using System;
-using System.Threading.Tasks;
-
-namespace DestDiscordBotV3.Common.Guild
+﻿namespace DestDiscordBotV3.Common.Guild
 {
+    using Data;
+    using Model;
+    using System;
+    using System.Threading.Tasks;
+
     public class GuildHandler : IGuildHandler
     {
         private readonly IRepository<AppGuild> _guild;
