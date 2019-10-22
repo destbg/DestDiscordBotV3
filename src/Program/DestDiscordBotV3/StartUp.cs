@@ -19,7 +19,7 @@
             File.ReadAllText("BotToken.txt");
 
         /// <summary>
-        /// Dp Folder Checks
+        /// Do Folder Checks
         /// </summary>
         public static Task DoFolderChecks()
         {
