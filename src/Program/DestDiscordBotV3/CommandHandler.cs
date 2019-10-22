@@ -48,6 +48,7 @@
         {
             if (!(s is SocketUserMessage msg) || msg.Author.IsBot || msg.Channel is SocketDMChannel) return;
 
+            var clientPrefix = false;
             var argPos = 0;
             var context = new CommandContextWithPrefix(_client, msg);
             var guild = await _guild.GetGuild(context.Guild.Id);
@@ -56,17 +57,17 @@
             await _points.GivePoints(context.User.Id, context.Guild.Id).ConfigureAwait(false);
 
             if (!(msg.HasStringPrefix(guild.Prefix, ref argPos) ||
-                msg.HasMentionPrefix(_client.CurrentUser, ref argPos)))
+                (clientPrefix = msg.HasMentionPrefix(_client.CurrentUser, ref argPos))))
                 return;
 
             await s.Channel.TriggerTypingAsync();
             var result = await _service.ExecuteAsync(context, argPos, _provider);
 
             if (!result.IsSuccess)
-                await HandleResultAsync(result, context, guild);
+                await HandleResultAsync(result, context, guild, clientPrefix);
         }
 
-        private async Task HandleResultAsync(IResult result, CommandContextWithPrefix context, AppGuild guild)
+        private async Task HandleResultAsync(IResult result, CommandContextWithPrefix context, AppGuild guild, bool clientPrefix)
         {
             switch (result.Error)
             {
@@ -75,14 +76,14 @@
                     return;
 
                 case CommandError.UnknownCommand:
-                    if (await HandleCustomCommandAsync(context, guild))
+                    if (await HandleCustomCommandAsync(context, guild, clientPrefix))
                         return;
                     await context.Channel.SendMessageAsync($"Unknown command, for list of commands try using {context.Prefix}help");
                     return;
 
                 case CommandError.ParseFailed:
                 case CommandError.BadArgCount:
-                    await context.Channel.SendMessageAsync($"Command wasn't used properly, try using {context.Prefix}help {GetCommandFromMessage(context.Message.Content, context.Prefix)}");
+                    await context.Channel.SendMessageAsync($"Command wasn't used properly, try using {context.Prefix}help {GetCommandFromMessage(context, clientPrefix)}");
                     return;
 
                 case CommandError.Unsuccessful:
@@ -96,18 +97,18 @@
             }
         }
 
-        private async Task<bool> HandleCustomCommandAsync(CommandContextWithPrefix context, AppGuild guild)
+        private async Task<bool> HandleCustomCommandAsync(CommandContextWithPrefix context, AppGuild guild, bool clientPrefix)
         {
             if (!guild.CustomCommands.Any())
                 return false;
-            var command = guild.CustomCommands.FirstOrDefault(f => f.Command == GetCommandFromMessage(context.Message.Content, context.Prefix));
+            var command = guild.CustomCommands.FirstOrDefault(f => f.Command == GetCommandFromMessage(context, clientPrefix));
             if (command == null)
                 return false;
             await context.Channel.SendMessageAsync(command.Message);
             return true;
         }
 
-        private string GetCommandFromMessage(string message, string prefix) =>
-            message.Split(' ')[0].Replace(prefix, "");
+        private string GetCommandFromMessage(CommandContextWithPrefix context, bool clientPrefix) =>
+            context.Message.Content.Replace(!clientPrefix ? context.Prefix : _client.CurrentUser.Mention.Replace("!", "") + " ", "").Split(' ')[0];
     }
 }
